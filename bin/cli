@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+if (require.main === module) {
+    const repl = require('repl');
+    const be = require('../be');
+    const setProps = require('../utils').setProps;
+    setProps(repl.start(':> ').context, be);
+}

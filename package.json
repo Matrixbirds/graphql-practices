@@ -1,7 +1,7 @@
 {
   "name": "GraphQL-demo-blog",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "be.js",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^1.0.2",
@@ -10,11 +10,13 @@
     "koa": "^2.2.0",
     "koa-bodyparser": "next",
     "koa-router": "next",
+    "koa-trace": "^1.0.0",
     "pg": "^6.1.5",
     "sequelize": "^3.30.4",
     "sequelize-cli": "^2.7.0"
   },
   "scripts": {
+    "start": "node main",
     "migrate": "sequelize db:migrate"
   }
 }

@@ -181,12 +181,6 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-boom@^4.0.0:
-  version "4.3.1"
-  resolved "http://registry.npm.taobao.org/boom/download/boom-4.3.1.tgz#4f8a3005cb4a7e3889f749030fd25b96e01d2e31"
-  dependencies:
-    hoek "4.x.x"
-
 brace-expansion@^1.0.0:
   version "1.1.7"
   resolved "http://registry.npm.taobao.org/brace-expansion/download/brace-expansion-1.1.7.tgz#3effc3c50e000531fb720eaff80f0ae8ef23cf59"
@@ -834,14 +828,6 @@ graphql-server-module-graphiql@^0.7.1:
   version "0.7.1"
   resolved "http://registry.npm.taobao.org/graphql-server-module-graphiql/download/graphql-server-module-graphiql-0.7.1.tgz#09cc2b80595bcb1165f3673138c268dd2166feb5"
 
-graphql-server@^0.3.2:
-  version "0.3.2"
-  resolved "http://registry.npm.taobao.org/graphql-server/download/graphql-server-0.3.2.tgz#ac3299963221be784fc78a22784d2d9ab7116e5e"
-  dependencies:
-    boom "^4.0.0"
-    http-errors "^1.5.0"
-    source-map-support "^0.4.2"
-
 graphql@^0.9.3:
   version "0.9.3"
   resolved "http://registry.npm.taobao.org/graphql/download/graphql-0.9.3.tgz#71fc0fa331bffb9c20678485861cfb370803118e"
@@ -942,10 +928,6 @@ hoek@2.x.x:
   version "2.16.3"
   resolved "http://registry.npm.taobao.org/hoek/download/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
-hoek@4.x.x:
-  version "4.1.1"
-  resolved "http://registry.npm.taobao.org/hoek/download/hoek-4.1.1.tgz#9cc573ffba2b7b408fb5e9c2a13796be94cddce9"
-
 homedir-polyfill@^1.0.0:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/homedir-polyfill/download/homedir-polyfill-1.0.1.tgz#4c2bbc8a758998feebf5ed68580f76d46768b4bc"
@@ -963,7 +945,7 @@ http-assert@^1.1.0:
     deep-equal "~1.0.0"
     http-errors "~1.4.0"
 
-http-errors@^1.2.8, http-errors@^1.3.1, http-errors@^1.5.0:
+http-errors@^1.2.8, http-errors@^1.3.1:
   version "1.6.1"
   resolved "http://registry.npm.taobao.org/http-errors/download/http-errors-1.6.1.tgz#5f8b8ed98aca545656bf572997387f904a722257"
   dependencies:
@@ -1251,6 +1233,12 @@ koa-router@next:
     koa-compose "^3.0.0"
     methods "^1.0.1"
     path-to-regexp "^1.1.1"
+
+koa-trace@^1.0.0:
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/koa-trace/download/koa-trace-1.0.0.tgz#2fbd6e63dcca97bfd1a30c2453a3dcd407840004"
+  dependencies:
+    debug "*"
 
 koa@^2.2.0:
   version "2.2.0"
@@ -2117,16 +2105,6 @@ sntp@1.x.x:
   resolved "http://registry.npm.taobao.org/sntp/download/sntp-1.0.9.tgz#6541184cc90aeea6c6e7b35e2659082443c66198"
   dependencies:
     hoek "2.x.x"
-
-source-map-support@^0.4.2:
-  version "0.4.14"
-  resolved "http://registry.npm.taobao.org/source-map-support/download/source-map-support-0.4.14.tgz#9d4463772598b86271b4f523f6c1f4e02a7d6aef"
-  dependencies:
-    source-map "^0.5.6"
-
-source-map@^0.5.6:
-  version "0.5.6"
-  resolved "http://registry.npm.taobao.org/source-map/download/source-map-0.5.6.tgz#75ce38f52bf0733c5a7f0c118d81334a2bb5f412"
 
 sparkles@^1.0.0:
   version "1.0.0"

@@ -8,21 +8,35 @@ const deps = {
 setProps(exports, deps);
 setProps(exports, require('./models'));
 
+const GraphQLSchema = require('./schema');
+
+const Koa = require('koa');
+const KoaRouter = require('koa-router');
+const KoaBody = require('koa-bodyparser');
+const graphqlKoa = require('graphql-server-koa').graphqlKoa;
+
+const app = new Koa();
+require('koa-trace')(app);
+if (process.env.NODE_ENV !== 'production') app.debug();
+const router = new KoaRouter();
+const PORT = process.env.APP_PORT || 3000;
+
+router.post('/graphql', graphqlKoa({ schema: GraphQLSchema}));
+router.get('/graphql', graphqlKoa({ schema: GraphQLSchema}));
+
+const crypto = require('crypto');
+app.use(async (ctx, next) => {
+    ctx.id = crypto.randomBytes(12);
+    ctx.trace('start');
+    await next();
+    ctx.trace('finish');
+})
+app.use(KoaBody());
+app.use(router.routes());
+app.use(router.allowedMethods());
+
 if (require.main === module) {
-    const Koa = require('koa');
-    const KoaRouter = require('koa-router');
-    const KoaBody = require('koa-bodyparser');
-    const graphqlKoa = require('graphql-server-koa').graphqlKoa;
-
-    const app = new Koa();
-    const router = new KoaRouter();
-    const PORT = process.env.APP_PORT || 3000;
-
-    const myGraphQLSchema = '{ hello }';
-    router.post('/graphql', graphqlKoa({ schema: myGraphQLSchema }));
-    router.get('/graphql', graphqlKoa({ schema: myGraphQLSchema }));
-
-    app.use(router.routes());
-    app.use(router.allowedMethods());
     app.listen(PORT);
+} else {
+    module.exports = app;
 }

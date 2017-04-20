@@ -8,3 +8,12 @@ exports.setProps = function(target, iteratorableObject, options) {
     }
     return target;
 };
+
+exports.readdirSync = function(path, basename) {
+    const fs = require('fs');
+    return fs
+        .readdirSync(path)
+        .filter(file => {
+            return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+        });
+}

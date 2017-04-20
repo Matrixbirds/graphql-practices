@@ -1,7 +1,7 @@
 const setProps = require('../utils').setProps;
 const DBConfig = require('./config')[process.env.NODE_ENV || 'development'];
 
-const GraphQLSchema = require('./schema');
+const GraphQLSchema = require('./graphql');
 
 const Koa = require('koa');
 const KoaRouter = require('koa-router');

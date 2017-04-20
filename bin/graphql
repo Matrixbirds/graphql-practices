@@ -1,0 +1,83 @@
+#!/usr/bin/env node
+if (require.main === module) {
+
+    const USAGE = 'GraphQL Code Snippets Generator\n\n Usage: <cmd> [options]\n\n';
+    const EXAMPLE = 'E.g.:  ./bin/graphql types -n <type-name> -attrs id:GraphQLInteger title:GraphQLString';
+    const yargs = require('yargs');
+    const argv = yargs
+        .usage(USAGE)
+        .help('help').alias('help', 'h')
+        .version('0.0.1', 'version').alias('version', 'V')
+        .command('types', 'generate types')
+        .command('mutations', 'generate mutations')
+        .example(EXAMPLE)
+        .options({
+            name: {
+                alias: 'n',
+                description: '<filename> - graphql type file',
+            },
+            attributes: {
+                array: true,
+                alias: 'attrs',
+                description: '<field1:type1> <field2:type2> ... - graphql Attributes',
+            }
+        })
+        .argv;
+
+    yargs.showHelp();
+
+
+    const CodeSnippets = {};
+
+    // read code snippets
+    const fs = require('fs');
+    const ejs = require('ejs');
+    const path = require('path');
+    const CodeSnippetsPath = path.join(__dirname, './code_snippets');
+    fs
+        .readdirSync(CodeSnippetsPath)
+        .filter(file => (file.indexOf('.') !== 0) && (file.slice(-4) === '.ejs'))
+        .forEach(file => {
+            const _file = fs.readFileSync(`${CodeSnippetsPath}/${file}`, 'utf8');
+            CodeSnippets[path.basename(file).split('.ejs')[0]] = _file;
+        });
+
+    function generateFile(src, filepath, options) {
+        const data = ejs.render(src, options);
+        fs.writeFileSync(filepath, data, { encoding: 'utf8', flag: 'w' });
+    }
+
+    function parseArgvAttrs(argv) {
+        const attrs = {};
+        for (const e of argv) {
+            let [k, v] = e.split(':');
+            attrs[k] = v;
+        }
+        return attrs;
+    }
+
+    const graphqlTypesPath = path.join(__dirname, '../be/graphql/types');
+    const graphqlMutationsPath = path.join(__dirname, '../be/graphql/mutations');
+
+
+
+    console.log(CodeSnippets);
+    if (argv.name && argv.attributes.length >= 0 && argv._.length == 1) {
+        const attrs = parseArgvAttrs(argv.attributes);
+        switch (argv._[0]) {
+            case 'types':
+                generateFile(CodeSnippets['types'], `${graphqlTypesPath}/${argv.name}.js`, {
+                    type_name: argv.name,
+                    field_tables: attrs
+                })
+                break;
+            case 'mutations':
+                throw('NoImplemtionException');
+                break;
+            default:
+                console.log(`[WARN] Unrecognized for cmd: ${argv._[0]}`);
+                break;
+        }
+        return false;
+    }
+}

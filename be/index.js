@@ -1,13 +1,6 @@
 const setProps = require('../utils').setProps;
 const DBConfig = require('./config')[process.env.NODE_ENV || 'development'];
 
-const deps = {
-    'DBConfig': DBConfig,
-};
-
-setProps(exports, deps);
-setProps(exports, require('./models'));
-
 const GraphQLSchema = require('./schema');
 
 const Koa = require('koa');
@@ -38,5 +31,9 @@ app.use(router.allowedMethods());
 if (require.main === module) {
     app.listen(PORT);
 } else {
-    module.exports = app;
+    setProps(exports, {
+        DBConfig: DBConfig,
+        app: app
+    });
+    setProps(exports, require('./models'));
 }

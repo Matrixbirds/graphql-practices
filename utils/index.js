@@ -31,7 +31,7 @@ function freezeRequire() {
 
 function camelCase(str) {
     const words = string => string.match(/\w+/g) || [];
-    return words(str).reduce((result, word, index) => {
+    return words(`${str}`).reduce((result, word, index) => {
         word = word[0].toUpperCase() + word.slice(1).toLowerCase()
         return result + word
     }, '');

@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var comment = sequelize.define('comment', {
+  const Comment = sequelize.define('comment', {
     title: DataTypes.STRING,
     content: DataTypes.STRING,
     user_id: DataTypes.INTEGER,
@@ -8,11 +8,11 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-          comment.belongsTo(models.user, { foreignKey: 'user_id' });
-          comment.belongsTo(models.article, { foreignKey: 'article_id' });
+          Comment.belongsTo(models.User, { foreignKey: 'user_id' });
+          Comment.belongsTo(models.Article, { foreignKey: 'article_id' });
       }
     },
     underscored: true
   });
-  return comment;
+  return Comment;
 };

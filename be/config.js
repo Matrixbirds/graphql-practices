@@ -1,24 +1,50 @@
-const base = {
+const databaseConfig = {
     dialect: 'postgres',
-    database: process.env.SEQ_DB || 'graphql_blog_development_js',
-    username: process.env.SEQ_DB_USER || 'graphql_blog_development_js',
-    password: process.env.SEQ_DB_PASSWORD || 'graphql_blog_development_js',
-    host: process.env.SEQ_HOST || '127.0.0.1',
-    port: process.env.SEQ_PORT || 5432,
+    database: 'graphql_blog_development_js',
+    username: 'graphql_blog_development_js',
+    password: 'graphql_blog_development_js',
+    host: '127.0.0.1',
+    port: 5432,
     protocol: 'postgres',
     pool: {
-        max: process.env.SEQ_POOL_MAX || 5,
-        idle: process.env.SEQ_POOL_IDLE || 30000
+        max: 5,
+        idle: 30000
     }
 };
+//
+//const test = Object.assign({
+//    database: 'graphql_blog_test_js',
+//    username: 'graphql_blog_test_js',
+//    password: 'graphql_blog_test_js',
+//}, base);
+//
+//module.exports = {
+//    development: base,
+//    test: test
+//};
+//
+// TODO: move env to file
 
-const test = Object.assign({
-    database: 'graphql_blog_test_js',
-    username: 'graphql_blog_test_js',
-    password: 'graphql_blog_test_js',
-}, base);
-
-module.exports = {
-    development: base,
-    test: test
+const APP_ENV = {
+    NODE_ENV: 'development',
+    APP_HOST: '',
+    PORT: 3000,
+    APP_SECRET_KEY: '',
 };
+
+Object.assign(APP_ENV, {
+    databaseConfig: databaseConfig
+});
+
+
+const nconf = require('nconf');
+
+nconf
+//    .file({
+//        file: 'config.yml',
+//        format: require('nconf-yaml'),
+//    })
+    .env()
+    .defaults(APP_ENV);
+
+module.exports = nconf;

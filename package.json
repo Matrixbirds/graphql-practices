@@ -7,10 +7,12 @@
     "bcrypt": "^1.0.2",
     "graphql": "^0.9.3",
     "graphql-server-koa": "^0.7.1",
+    "jsonwebtoken": "^7.3.0",
     "koa": "^2.2.0",
     "koa-bodyparser": "next",
     "koa-router": "next",
     "koa-trace": "^1.0.0",
+    "nconf": "^0.8.4",
     "pg": "^6.1.5",
     "sequelize": "^3.30.4",
     "sequelize-cli": "^2.7.0"

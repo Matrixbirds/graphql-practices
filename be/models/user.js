@@ -1,9 +1,9 @@
 'use strict';
-const freezeRequire = require('../../utils').freezeRequire;
+const { freezeRequire }= require('../../utils');
 const bcrypt = freezeRequire('bcrypt');
 
 module.exports = function(sequelize, DataTypes) {
-    var user = sequelize.define('user', {
+    const User = sequelize.define('user', {
         name: {
             type: DataTypes.STRING,
             unique: {
@@ -32,8 +32,8 @@ module.exports = function(sequelize, DataTypes) {
     {
         classMethods: {
             associate: function(models) {
-                user.hasMany(models.comment, { foreignKey: 'user_id' });
-                user.hasMany(models.article, { foreignKey: 'user_id' });
+                User.hasMany(models.Comment, { foreignKey: 'user_id' });
+                User.hasMany(models.Article, { foreignKey: 'user_id' });
             }
         },
         instanceMethods: {
@@ -41,10 +41,10 @@ module.exports = function(sequelize, DataTypes) {
                 return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
             },
             validPassword(password) {
-                return bcrypt.compareSync(password, this.password_digest);
+                return bcrypt.compareSync(password, this.getDataValue('password_digest'));
             }
         },
         underscored: true
     });
-    return user;
+    return User;
   };

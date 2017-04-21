@@ -1,3 +1,4 @@
+'use strict';
 function setProps(target, properties, options) {
     const opts = Object.assign({}, options);
     for (let [key, val] of Object.entries(properties)) {
@@ -27,11 +28,20 @@ function freezeRequire() {
     return Object.freeze(require(arguments[0]));
 }
 
+function camelCase(str) {
+    const words = string => string.match(/\w+/g) || [];
+    return words(str).reduce((result, word, index) => {
+        word = word[0].toUpperCase() + word.slice(1).toLowerCase()
+        return result + word
+    }, '');
+}
+
 setProps(exports, {
     setProps: setProps,
     readdirSync: readdirSync,
     inspectPrototype: inspectPrototype,
-    freezeRequire: freezeRequire
+    freezeRequire: freezeRequire,
+    camelCase: camelCase
 });
 
 
@@ -56,6 +66,17 @@ defineMethod(exports, 'isFalsy', args => {
     return Falsy.includes(args);
 })
 
+const JWT = freezeRequire('jsonwebtoken');
+
+defineMethod(exports, 'decodeJWT', token => {
+});
+
+defineMethod(exports, 'encodeJWT', params => {
+    JWT.sign({
+        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+        data: token
+    }, process.env.KOA_SECRET_KEY);
+});
 // TODO: isEmpty
 /***
    defineMethod(exports, 'isEmpty', args => {

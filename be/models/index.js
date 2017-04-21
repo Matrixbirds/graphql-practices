@@ -4,21 +4,21 @@ var fs        = require('fs');
 var path      = require('path');
 var Sequelize = require('sequelize');
 var basename  = path.basename(module.filename);
-var env       = process.env.NODE_ENV || 'development';
-var config    = require(__dirname + '/../config.js')[env];
+var databaseConfig = require(__dirname + '/../config.js').get('databaseConfig');
 var db        = {};
 
-if (config.use_env_variable) {
-  var sequelize = new Sequelize(process.env[config.use_env_variable]);
+if (databaseConfig.use_env_variable) {
+  var sequelize = new Sequelize(process.env[databaseConfig.use_env_variable]);
 } else {
-  var sequelize = new Sequelize(config.database, config.username, config.password, config);
+  var sequelize = new Sequelize(databaseConfig.database, databaseConfig.username, databaseConfig.password, databaseConfig);
 }
 
-require('../../utils')
-    .readdirSync(__dirname, basename)
+const { readdirSync, camelCase } = require('../../utils');
+
+readdirSync(__dirname, basename)
     .forEach(function(file) {
         var model = sequelize['import'](path.join(__dirname, file));
-        db[model.name] = model;
+        db[camelCase(model.name)] = model;
     });
 
 Object.keys(db).forEach(function(modelName) {

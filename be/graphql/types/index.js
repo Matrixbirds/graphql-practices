@@ -5,9 +5,9 @@ var path      = require('path');
 var basename  = path.basename(module.filename);
 
 const {
-    user: User,
-    article: Article,
-    comment: Comment
+    User,
+    Article,
+    Comment
 } = require('../../models');
 
 function QueryTypes({

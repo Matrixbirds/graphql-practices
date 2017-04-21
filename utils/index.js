@@ -1,4 +1,5 @@
 'use strict';
+
 function setProps(target, properties, options) {
     const opts = Object.assign({}, options);
     for (let [key, val] of Object.entries(properties)) {
@@ -41,7 +42,12 @@ setProps(exports, {
     readdirSync: readdirSync,
     inspectPrototype: inspectPrototype,
     freezeRequire: freezeRequire,
-    camelCase: camelCase
+    camelCase: camelCase,
+});
+
+
+setProps(exports, {
+    jwt: require('./jwt')(exports),
 });
 
 
@@ -66,17 +72,6 @@ defineMethod(exports, 'isFalsy', args => {
     return Falsy.includes(args);
 })
 
-const JWT = freezeRequire('jsonwebtoken');
-
-defineMethod(exports, 'decodeJWT', token => {
-});
-
-defineMethod(exports, 'encodeJWT', params => {
-    JWT.sign({
-        exp: Math.floor(Date.now() / 1000) + (60 * 60),
-        data: token
-    }, process.env.KOA_SECRET_KEY);
-});
 // TODO: isEmpty
 /***
    defineMethod(exports, 'isEmpty', args => {

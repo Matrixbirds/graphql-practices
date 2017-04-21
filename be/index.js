@@ -1,5 +1,5 @@
 const setProps = require('../utils').setProps;
-const DBConfig = require('./config')[process.env.NODE_ENV || 'development'];
+const config = require('./config');
 
 const GraphQLSchema = require('./graphql');
 
@@ -12,7 +12,7 @@ const app = new Koa();
 require('koa-trace')(app);
 if (process.env.NODE_ENV !== 'production') app.debug();
 const router = new KoaRouter();
-const PORT = process.env.APP_PORT || 3000;
+const PORT = config.get('PORT');
 
 router.post('/graphql', graphqlKoa({ schema: GraphQLSchema}));
 router.get('/graphql', graphqlKoa({ schema: GraphQLSchema}));
@@ -32,7 +32,7 @@ if (require.main === module) {
     app.listen(PORT);
 } else {
     setProps(exports, {
-        DBConfig: DBConfig,
+        config: config,
         app: app
     });
     setProps(exports, require('./models'));

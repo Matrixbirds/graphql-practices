@@ -7,11 +7,7 @@ var basename  = path.basename(module.filename);
 var databaseConfig = require(__dirname + '/../config.js').get('databaseConfig');
 var db        = {};
 
-if (databaseConfig.use_env_variable) {
-  var sequelize = new Sequelize(process.env[databaseConfig.use_env_variable]);
-} else {
-  var sequelize = new Sequelize(databaseConfig.database, databaseConfig.username, databaseConfig.password, databaseConfig);
-}
+var sequelize = new Sequelize(databaseConfig.database, databaseConfig.username, databaseConfig.password, databaseConfig);
 
 const { readdirSync, camelCase } = require('../../utils');
 

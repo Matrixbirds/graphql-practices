@@ -29,7 +29,7 @@ const APP_ENV = {
     NODE_ENV: 'development',
     APP_HOST: '',
     PORT: 3000,
-    APP_SECRET_KEY: '',
+    APP_SECRET_KEY: '9hXP2c73cOhzT5S4S1FKTCHJS7cJ65o9',
 };
 
 Object.assign(APP_ENV, {

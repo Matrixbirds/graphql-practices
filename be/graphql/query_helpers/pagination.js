@@ -8,7 +8,7 @@ module.exports = function({
     GraphQLList
 }) {
 
-    const {camelCase} = require('../../utils');
+    const {camelCase} = require('../../../utils');
 
     const PageInfo = new GraphQLObjectType({
         name: "PageInfo",
@@ -36,17 +36,20 @@ module.exports = function({
         })
     );
 
-    const convertNodeToCursor = ({id}) => bota(id.toString());
-    const bota = string => new Buffer(string, 'binary').toString('base64');
-    const convertCursorToNode = cursor => +atob(cursor);
-    const atob = string => new Buffer(string, 'base64').toString('binary');
+    const Paginate = ({itemType, model}) => ({
+        type: Page(itemType),
+        args: {
+            page: { type: GraphQLInt },
+            per: { type: GraphQLInt },
+        },
+        resolve: (root, {page, per}) => {
+            page = Math.max(page-1, 0);
+            if ( per <=0 ) per = 5;
+            return model.findAndCountAll({
+                offset: +page, limit: +per
+            }).then(_records => (_records))
+        }
+    });
 
-    return {
-        PageInfo: PageInfo,
-        Page: Page,
-        convertNodeToCursor: convertNodeToCursor,
-        bota: bota,
-        convertCursorToNode: convertCursorToNode,
-        atob: atob,
-    };
+    return Paginate;
 }

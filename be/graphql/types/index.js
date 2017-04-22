@@ -1,16 +1,17 @@
 'use strict';
 
-var fs        = require('fs');
-var path      = require('path');
-var basename  = path.basename(module.filename);
+const Types = {};
+const graphql = require('graphql');
+const path = require('path');
+const basename  = path.basename(module.filename);
+require('../../../utils')
+    .readdirSync(__dirname, basename)
+    .forEach(file => {
+        const _type = require(path.join(__dirname, file));
+        Types[_type.name] = _type(graphql);
+    });
 
-const {
-    User,
-    Article,
-    Comment
-} = require('../../models');
-
-function QueryTypes({
+function QueryType({
     GraphQLObjectType,
     GraphQLList,
     GraphQLString,
@@ -18,39 +19,21 @@ function QueryTypes({
     GraphQLSchema,
     GraphQLInt
 }) {
-    const Types = {};
-    const graphql = arguments[0]
-    require('../../../utils')
-        .readdirSync(__dirname, basename)
-        .forEach(file => {
-            const _type = require(path.join(__dirname, file))(graphql);
-            Types[_type.name] = _type;
-        });
-
-    const pagination = require('../pagination')(graphql);
+    const { definePaginateType, defineEntityType } = require('../query_helpers');
 
     return new GraphQLObjectType({
         name: 'BlogSchema',
         description: 'Root of the Blog Schema',
         fields: () => ({
-            users: {
-                type: pagination.Page(Types.user),
-                args: {
-                    page: { type: GraphQLInt },
-                    per: { type: GraphQLInt },
-                },
-                resolve: (root, {page, per}) => {
-                    page = Math.max(page-1, 0);
-                    per = Math.max(per, 0);
-                    return User.findAndCountAll({
-                        offset: +page, limit: +per
-                    }).then(_users => {
-                        return _users;
-                    })
-                }
-            }
+            users: definePaginateType(Types.User),
+            comments: definePaginateType(Types.Comment),
+            user: defineEntityType(Types.User),
+            comment: defineEntityType(Types.Comment),
         })
     });
 };
 
-module.exports = QueryTypes(require('graphql'));
+Types['QueryType'] = QueryType;
+
+module.exports = Types;
+

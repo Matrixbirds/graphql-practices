@@ -11,18 +11,7 @@ const databaseConfig = {
         idle: 30000
     }
 };
-//
-//const test = Object.assign({
-//    database: 'graphql_blog_test_js',
-//    username: 'graphql_blog_test_js',
-//    password: 'graphql_blog_test_js',
-//}, base);
-//
-//module.exports = {
-//    development: base,
-//    test: test
-//};
-//
+
 // TODO: move env to file
 
 const APP_ENV = {

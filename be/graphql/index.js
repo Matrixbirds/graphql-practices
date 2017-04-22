@@ -1,7 +1,5 @@
-const {
-    GraphQLSchema,
-} = require('graphql');
+const graphql = require('graphql');
 
-module.exports = new GraphQLSchema({
-    query: require('./types'),
+module.exports = new graphql.GraphQLSchema({
+    query: require('./types').QueryType(graphql),
 });

@@ -2,7 +2,7 @@
 if (require.main === module) {
 
     const USAGE = 'GraphQL Code Snippets Generator\n\n Usage: <cmd> [options]\n\n';
-    const EXAMPLE = 'E.g.:  ./bin/graphql types -n <type-name> -attrs id:GraphQLInteger title:GraphQLString';
+    const EXAMPLE = 'E.g.:  ./bin/graphql types -n <type-name> -attrs id:GraphQLInt title:GraphQLString';
     const yargs = require('yargs');
     const argv = yargs
         .usage(USAGE)
@@ -24,10 +24,7 @@ if (require.main === module) {
         })
         .argv;
 
-    yargs.showHelp();
-
-
-    const CodeSnippets = {};
+     const CodeSnippets = {};
 
     // read code snippets
     const fs = require('fs');
@@ -61,15 +58,22 @@ if (require.main === module) {
 
 
 
-    console.log(CodeSnippets);
+//    console.log(CodeSnippets);
+    if (argv._.length < 0) {
+        yargs.showHelp();
+    }
+
+    const {camelCase} = require('../utils');
     if (argv.name && argv.attributes.length >= 0 && argv._.length == 1) {
         const attrs = parseArgvAttrs(argv.attributes);
         switch (argv._[0]) {
             case 'types':
-                generateFile(CodeSnippets['types'], `${graphqlTypesPath}/${argv.name}.js`, {
-                    type_name: argv.name,
+                const filepath = `${graphqlTypesPath}/${argv.name}.js`;
+                generateFile(CodeSnippets['types'], filepath, {
+                    type_name: camelCase(argv.name),
                     field_tables: attrs
-                })
+                });
+                console.log(`generate types file at ${filepath}`);
                 break;
             case 'mutations':
                 throw('NoImplemtionException');

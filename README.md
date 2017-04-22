@@ -41,3 +41,23 @@
    }
  ```
 
+# Query Mutation Example
+ ```cURL
+ curl --request POST \
+  --url http://localhost:3000/graphql \
+  --header 'cache-control: no-cache' \
+  --header 'content-type: application/json' \
+  --header 'postman-token: 04b4e3ca-a3c3-f25d-bc3d-57725666d06d' \
+  --data '{\n	"query": "mutation($name: String $password: String) { createUser(name: $name, password: $password) { id name } }",\n	"variables": {\n		"name": "123123123",\n		"password": "123123123"\n	}\n}'
+ ```
+
+ ```json
+ {
+     "data": {
+         "createUser": {
+             "id": "4",
+             "name": "123123123"
+         }
+     }
+ }
+ ```

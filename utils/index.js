@@ -20,6 +20,7 @@ function readdirSync(path, basename) {
         });
 }
 
+
 function inspectPrototype(obj) {
     const getClass = {}.toString;
     return getClass.call(obj);
@@ -43,6 +44,7 @@ setProps(exports, {
     inspectPrototype: inspectPrototype,
     freezeRequire: freezeRequire,
     camelCase: camelCase,
+    fileFormat: format => (file => (file.indexOf('.') !== 0) && (file.slice(-format.length) === format))
 });
 
 

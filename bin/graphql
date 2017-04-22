@@ -53,9 +53,15 @@ if (require.main === module) {
         return attrs;
     }
 
-    const graphqlTypesPath = path.join(__dirname, '../be/graphql/types');
-    const graphqlMutationsPath = path.join(__dirname, '../be/graphql/mutations');
+    const graphqlPath = {
+        'types': path.join(__dirname, '../be/graphql/types'),
+        'mutations': path.join(__dirname, '../be/graphql/mutations'),
+    }
 
+    const graphqlFileSuffix = {
+        'types': 'types.js',
+        'mutations': 'mutations.js',
+    }
 
 
 //    console.log(CodeSnippets);
@@ -68,7 +74,7 @@ if (require.main === module) {
         const attrs = parseArgvAttrs(argv.attributes);
         switch (argv._[0]) {
             case 'types':
-                const filepath = `${graphqlTypesPath}/${argv.name}.js`;
+                const filepath = `${graphqlPath.types}/${argv.name}.${graphqlFileSuffix.types}`;
                 generateFile(CodeSnippets['types'], filepath, {
                     type_name: camelCase(`${argv.name}Type`),
                     name: camelCase(argv.name),

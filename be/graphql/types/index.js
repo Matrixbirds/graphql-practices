@@ -4,8 +4,11 @@ const Types = {};
 const graphql = require('graphql');
 const path = require('path');
 const basename  = path.basename(module.filename);
-require('../../../utils')
-    .readdirSync(__dirname, basename)
+
+const {readdirSync, fileFormat} = require('../../../utils');
+
+readdirSync(__dirname, basename)
+    .filter(fileFormat('.types.js'))
     .forEach(file => {
         const _type = require(path.join(__dirname, file));
         Types[_type.name] = _type(graphql);

@@ -9,9 +9,10 @@ var db        = {};
 
 var sequelize = new Sequelize(databaseConfig.database, databaseConfig.username, databaseConfig.password, databaseConfig);
 
-const { readdirSync, camelCase } = require('../../utils');
+const { readdirSync, camelCase, fileFormat } = require('../../utils');
 
 readdirSync(__dirname, basename)
+    .filter(fileFormat('.js'))
     .forEach(function(file) {
         var model = sequelize['import'](path.join(__dirname, file));
         db[camelCase(model.name)] = model;

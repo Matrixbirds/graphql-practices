@@ -1,5 +1,5 @@
 'use strict';
-module.exports = function <%= type_name %>({
+module.exports = function <%= name %>({
     GraphQLObjectType,
     GraphQLSchema,
     GraphQLString,
@@ -7,19 +7,19 @@ module.exports = function <%= type_name %>({
     GraphQLNonNull,
     GraphQLInt,
 }) {
-    const {<%= type_name %>} = require('../../models');
+    const {<%= name %>} = require('../../models');
     const <%= type_name %> = new GraphQLObjectType({
-        name: '<%= `${type_name}` %>' ,
+        name: '<%= `${name}` %>' ,
         description: '...',
 
         fields: () => ({<% for (let [field, type] of Object.entries(field_tables)) { %>
             <%= field %>: {
                 type: <%= type %>,
-            },
-        <% } %>})
+            },<% } %>
+        })
     });
     return {
-        itemType: <%= type_name %>Type,
-        model: <%= type_name %>
+        itemType: <%= type_name %>,
+        model: <%= name %>
     };
 }

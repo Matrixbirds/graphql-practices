@@ -8,7 +8,7 @@ module.exports = function Article({
     GraphQLInt,
 }) {
     const {Article} = require('../../models');
-    const Article = new GraphQLObjectType({
+    const Articletype = new GraphQLObjectType({
         name: 'Article' ,
         description: '...',
 
@@ -16,18 +16,16 @@ module.exports = function Article({
             id: {
                 type: GraphQLInt,
             },
-        
             title: {
                 type: GraphQLString,
             },
-        
             content: {
                 type: GraphQLString,
             },
         })
     });
     return {
-        itemType: ArticleType,
+        itemType: Articletype,
         model: Article
     };
 }

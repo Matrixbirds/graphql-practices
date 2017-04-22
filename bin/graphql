@@ -70,7 +70,8 @@ if (require.main === module) {
             case 'types':
                 const filepath = `${graphqlTypesPath}/${argv.name}.js`;
                 generateFile(CodeSnippets['types'], filepath, {
-                    type_name: camelCase(argv.name),
+                    type_name: camelCase(`${argv.name}Type`),
+                    name: camelCase(argv.name),
                     field_tables: attrs
                 });
                 console.log(`generate types file at ${filepath}`);

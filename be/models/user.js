@@ -1,5 +1,5 @@
 'use strict';
-const { freezeRequire }= require('../../utils');
+const { freezeRequire, jwt }= require('../../utils');
 const bcrypt = freezeRequire('bcrypt');
 
 module.exports = function(sequelize, DataTypes) {
@@ -34,7 +34,7 @@ module.exports = function(sequelize, DataTypes) {
             associate: function(models) {
                 User.hasMany(models.Comment, { foreignKey: 'user_id' });
                 User.hasMany(models.Article, { foreignKey: 'user_id' });
-            }
+            },
         },
         instanceMethods: {
             generateHash(password) {

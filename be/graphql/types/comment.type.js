@@ -7,7 +7,6 @@ module.exports = ({
     GraphQLNonNull,
     GraphQLInt
 }) => {
-    const {Comment} = require('../../models');
     const CommentType = new GraphQLObjectType({
     name: 'comment' ,
         description: '...',
@@ -26,8 +25,5 @@ module.exports = ({
             },
         })
     });
-    return {
-        itemType: CommentType,
-        model: Comment,
-    };
+    return CommentType;
 }

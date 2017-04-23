@@ -8,9 +8,7 @@ module.exports = function({
     GraphQLList
 }) {
 
-    const {camelCase} = require('../../../utils');
-
-    const entityProperty = ({itemType, model}) => ({
+    const entityProperty = (itemType, model) => ({
         type: itemType,
         args: {
             id: { type: GraphQLInt },

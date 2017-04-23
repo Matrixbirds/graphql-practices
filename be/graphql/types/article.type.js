@@ -7,8 +7,7 @@ module.exports = ({
     GraphQLNonNull,
     GraphQLInt,
 }) => {
-    const {Article} = require('../../models');
-    const Articletype = new GraphQLObjectType({
+    const ArticleType = new GraphQLObjectType({
         name: 'Article' ,
         description: '...',
 
@@ -24,8 +23,5 @@ module.exports = ({
             }
         })
     });
-    return {
-        itemType: Articletype,
-        model: Article
-    };
+    return ArticleType;
 }

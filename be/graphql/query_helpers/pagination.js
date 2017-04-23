@@ -36,7 +36,7 @@ module.exports = function({
         })
     );
 
-    const Paginate = ({itemType, model}) => ({
+    const Paginate = (itemType, model) => ({
         type: Page(itemType),
         args: {
             page: { type: GraphQLInt },

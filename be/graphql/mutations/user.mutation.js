@@ -9,42 +9,44 @@ module.exports = ({
 }) => {
     const [Models, Types] = [require('../../models'), require('../types')];
 
-    
     const createMutation = {
-       type: TestType.itemType,
+       type: Types.UserType,
        args: {
-           id: { type:  GraphQLInt },
+           name: { type:  GraphQLString },
+           password: { type:  GraphQLString },
        },
        resolve: (object, args) => {
-           return Models.Test.create(args);
+           return Models.User.create(args);
        }
     };
-    
-    const updateMutation = {
-       type: TestType.itemType,
-       args: {
-           id: { type:  GraphQLInt },
-       },
-       resolve: (object, args) => {
-           return Models.Test.update(args);
-       }
-    };
-    
-    const destroyMutation = {
-       type: TestType.itemType,
-       args: {
-           id: { type:  GraphQLInt },
-       },
-       resolve: (object, args) => {
-           return Models.Test.destroy(args);
-       }
-    };
-    
 
-    const TestMutation = {
+    const updateMutation = {
+       type: Types.UserType,
+       args: {
+           name: { type:  GraphQLString },
+           password: { type:  GraphQLString },
+       },
+       resolve: (object, args) => {
+           return Models.User.update(args);
+       }
+    };
+
+    const destroyMutation = {
+       type: Types.UserType,
+       args: {
+           name: { type:  GraphQLString },
+           password: { type:  GraphQLString },
+       },
+       resolve: (object, args) => {
+           return Models.User.destroy(args);
+       }
+    };
+
+
+    const UserMutation = {
         create: createMutation,
         update: updateMutation,
         destroy: destroyMutation,
     }
-    return TestMutation;
+    return UserMutation;
 }

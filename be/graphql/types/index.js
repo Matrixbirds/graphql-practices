@@ -7,6 +7,7 @@ const basename  = path.basename(module.filename);
 const {importSubModule} = require('../../../utils');
 
 const Types = importSubModule(__dirname, '.type.js')(graphql);
+const Models = require('../../models');
 
 function QueryType({
     GraphQLObjectType,
@@ -22,10 +23,10 @@ function QueryType({
         name: 'BlogSchema',
         description: 'Root of the Blog Schema',
         fields: () => ({
-            users: definePaginateType(Types.UserType),
-            comments: definePaginateType(Types.CommentType),
-            user: defineEntityType(Types.UserType),
-            comment: defineEntityType(Types.CommentType),
+            users: definePaginateType(Types.UserType, Models.User),
+            comments: definePaginateType(Types.CommentType, Models.Comment),
+            user: defineEntityType(Types.UserType, Models.User),
+            comment: defineEntityType(Types.CommentType, Models.Comment),
         })
     });
 };

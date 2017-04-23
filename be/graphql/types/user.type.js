@@ -6,7 +6,7 @@ module.exports = ({
     GraphQLList,
     GraphQLNonNull
 }) => {
-    const {User} = require('../../models');
+    const {jwt} = require('../../../utils');
     const UserType = new GraphQLObjectType({
         name: 'user',
         description: '...',
@@ -24,11 +24,12 @@ module.exports = ({
             },
             updated_at: {
                 type: GraphQLString
+            },
+            token: {
+                type: GraphQLString,
+                resolve: ({id,name,updated_at}) => jwt.encode({data: {id: id, name: name, updated_at: updated_at}})
             }
         })
     });
-    return {
-        itemType: UserType,
-        model: User
-    };
+    return UserType;
 }

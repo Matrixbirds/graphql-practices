@@ -22,7 +22,7 @@ function Mutation({
         name: 'Mutation',
         description: 'Mutation Root',
         fields: () => ({
-            createUser: Mutations.UsersMutation.create,
+            createUser: Mutations.UserMutation.create,
         })
     });
 };

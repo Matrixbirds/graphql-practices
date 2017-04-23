@@ -9,11 +9,14 @@ module.exports = ({
 }) => {
     const [Models, Types] = [require('../../models'), require('../types')];
 
+    const UserType = Types.UserType.query;
+    const UserAttributesType = Types.UserType.attributes;
+    const {OperateStatusType} = require('../query_helpers');
+
     const createMutation = {
-       type: Types.UserType,
+       type: UserType,
        args: {
-           name: { type:  GraphQLString },
-           password: { type:  GraphQLString },
+           user: { type: UserAttributesType },
        },
        resolve: (object, args) => {
            return Models.User.create(args);
@@ -21,24 +24,35 @@ module.exports = ({
     };
 
     const updateMutation = {
-       type: Types.UserType,
+       type: UserType,
        args: {
-           name: { type:  GraphQLString },
-           password: { type:  GraphQLString },
+           user: { type: UserAttributesType },
+           id: { type: new GraphQLNonNull(GraphQLInt) }
        },
-       resolve: (object, args) => {
-           return Models.User.update(args);
+        resolve: async (object, { user, id }) => {
+           let record = await Models.User.findById(id);
+           if (record) {
+               return record.update(user, { fields: ['name', 'password'] });
+           } else {
+               throw Error("找不到用户");
+          }
        }
     };
 
     const destroyMutation = {
-       type: Types.UserType,
+       type: OperateStatusType,
        args: {
-           name: { type:  GraphQLString },
-           password: { type:  GraphQLString },
+           id: { type: new GraphQLNonNull(GraphQLInt) },
        },
-       resolve: (object, args) => {
-           return Models.User.destroy(args);
+       resolve: async (object, {id}) => {
+           let record = await Models.User.findById(id);
+           if (record) {
+               return record.destroy().then(res => {
+                   return { success: res }
+               });
+           } else {
+              throw Error("找不到用户");
+           }
        }
     };
 

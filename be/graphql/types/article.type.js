@@ -8,8 +8,8 @@ module.exports = ({
     GraphQLInt,
 }) => {
     const ArticleType = new GraphQLObjectType({
-        name: 'Article' ,
-        description: '...',
+        name: 'Article',
+        description: 'only for query',
 
         fields: () => ({
             id: {
@@ -23,5 +23,25 @@ module.exports = ({
             }
         })
     });
-    return ArticleType;
+
+    const attributesArticleType = new GraphQLObjectType({
+        name: 'ArticleAttributesType',
+        description: 'only for mutation attributes',
+
+        fields: () => ({
+            id: {
+                type: GraphQLInt,
+            },
+            title: {
+                type: new GraphQLNonNull(GraphQLString),
+            },
+            content: {
+                type: new GraphQLNonNull(GraphQLString),
+            }
+        })
+    });
+    return {
+        query: ArticleType,
+        attributes: attributesArticleType,
+    };
 }

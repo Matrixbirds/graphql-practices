@@ -8,22 +8,38 @@ module.exports = ({
     GraphQLInt
 }) => {
     const CommentType = new GraphQLObjectType({
-    name: 'comment' ,
+    name: 'Comment' ,
         description: '...',
-
         fields: () => ({
             id: {
                 type: GraphQLInt,
             },
-
             title: {
                 type: GraphQLString,
             },
-
             content: {
                 type: GraphQLString,
             },
         })
     });
-    return CommentType;
+   const attributesCommentType = new GraphQLObjectType({
+        name: 'CommentAttributesType',
+        description: 'only for mutation attributes',
+        fields: () => ({
+            id: {
+                type: GraphQLInt,
+            },
+            title: {
+                type: new GraphQLNonNull(GraphQLString),
+            },
+            content: {
+                type: new GraphQLNonNull(GraphQLString),
+            }
+        })
+    });
+
+    return {
+        query: CommentType,
+        attributes: attributesCommentType,
+    };
 }

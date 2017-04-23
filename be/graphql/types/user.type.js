@@ -1,10 +1,12 @@
 'use strict';
 module.exports = ({
     GraphQLObjectType,
+    GraphQLInputObjectType,
     GraphQLSchema,
     GraphQLString,
     GraphQLList,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLInt
 }) => {
     const {jwt} = require('../../../utils');
     const UserType = new GraphQLObjectType({
@@ -13,11 +15,10 @@ module.exports = ({
 
         fields: () => ({
             name: {
-                type: new GraphQLNonNull(GraphQLString),
-                resolve: user => user.name,
+                type: GraphQLString,
             },
             id: {
-                type: new GraphQLNonNull(GraphQLString),
+                type: GraphQLInt,
             },
             created_at: {
                 type: GraphQLString
@@ -31,5 +32,25 @@ module.exports = ({
             }
         })
     });
-    return UserType;
+
+   const attributesUserType = new GraphQLInputObjectType({
+        name: 'UserAttributesType',
+        description: 'only for mutation attributes',
+        fields: () => ({
+            id: {
+                type: GraphQLInt,
+            },
+            password: {
+                type: new GraphQLNonNull(GraphQLString),
+            },
+            name: {
+                type: new GraphQLNonNull(GraphQLString),
+            }
+        })
+    });
+
+    return {
+        query: UserType,
+        attributes: attributesUserType,
+    };
 }

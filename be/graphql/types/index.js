@@ -23,10 +23,10 @@ function QueryType({
         name: 'BlogSchema',
         description: 'Root of the Blog Schema',
         fields: () => ({
-            users: definePaginateType(Types.UserType, Models.User),
-            comments: definePaginateType(Types.CommentType, Models.Comment),
-            user: defineEntityType(Types.UserType, Models.User),
-            comment: defineEntityType(Types.CommentType, Models.Comment),
+            users: definePaginateType(Types.UserType.query, Models.User),
+            comments: definePaginateType(Types.CommentType.query, Models.Comment),
+            user: defineEntityType(Types.UserType.query, Models.User),
+            comment: defineEntityType(Types.CommentType.query, Models.Comment),
         })
     });
 };

@@ -23,6 +23,14 @@ function Mutation({
         description: 'Mutation Root',
         fields: () => ({
             createUser: Mutations.UserMutation.create,
+            updateUser: Mutations.UserMutation.update,
+            destroyUser: Mutations.UserMutation.destroy,
+            createArticle: Mutations.ArticleMutation.create,
+            updateArticle: Mutations.ArticleMutation.update,
+            destroyArticle: Mutations.ArticleMutation.destroy,
+            createComment: Mutations.CommentMutation.create,
+            updateComment: Mutations.CommentMutation.update,
+            destroyComment: Mutations.CommentMutation.destroy,
         })
     });
 };

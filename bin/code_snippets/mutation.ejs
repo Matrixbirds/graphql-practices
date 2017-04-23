@@ -10,13 +10,13 @@ module.exports = ({
     const [Models, Types] = [require('../../models'), require('../types')];
 <% for (let mutation of mutations) {%>
     const <%= mutation %>Mutation = {
-       type: Types.<%= type_name %>,
-       args: {<% for( const [field_name, field_type] of fields_table ) { %>
-           <%= field_name %>: { type:  <%= field_type %> },<%} %>
-       },
-       resolve: (object, args) => {
-           return Models.<%= name %>.<%=mutation%>(args);
-       }
+        type: Types.<%= type_name %>,
+        args: {<% for( const [field_name, field_type] of fields_table ) { %>
+            <%= field_name %>: { type:  <%= field_type %> },<%} %>
+        },
+        resolve: (object, args) => {
+            return Models.<%= name %>.<%=mutation%>(args);
+        }
     };
 <% } %>
 

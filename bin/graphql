@@ -69,7 +69,7 @@ if (require.main === module) {
         yargs.showHelp();
     }
 
-    const {camelCase} = require('../utils');
+    const {camelCase, isFalsy, isEmpty} = require('../utils');
 
     const resourceHandler = (resource, args) => generateFile(resource, args);
 
@@ -78,6 +78,7 @@ if (require.main === module) {
     const CommandHandler = ({ _, attributes, mutations }) => {
         let [cmd, name] = _;
         name = camelCase(name);
+        if (isFalsy(mutations) || isEmpty(mutations)) mutations = ['create', 'update', 'destroy'];
         const attrs = parseAttrs(attributes);
         if (cmd && name && ['type', 'mutation'].includes(cmd) && attrs.length > 0 ) {
             const generateOptions = {
@@ -85,7 +86,6 @@ if (require.main === module) {
                 type_name: `${name}Type`,
                 mutation_name: `${name}Mutation`,
                 fields_table: attrs,
-                fields: attrs.map(e => e[0]).join(','),
                 mutations: mutations
             };
             const options = {

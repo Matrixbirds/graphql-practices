@@ -93,9 +93,8 @@ defineMethod(exports, 'isFalsy', args => {
     return Falsy.includes(args);
 })
 
-// TODO: isEmpty
-/***
-   defineMethod(exports, 'isEmpty', args => {
 
-   })
-***/
+// suppose array like object
+defineMethod(exports, 'isEmpty', ({ length }) => {
+    length < 1 ? true : false
+})

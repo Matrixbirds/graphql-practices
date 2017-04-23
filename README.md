@@ -7,7 +7,8 @@
  ```
  * graphql code snippet generator
  ```bash
- ./bin/graphql types -n comment --attrs id:GraphQLInteger title:GraphQLString content:GraphQLString
+ ./bin/graphql type comment --attrs id:GraphQLInteger title:GraphQLString content:GraphQLString
+ ./bin/graphql mutation article --attrs id:GraphQLInteger title:GraphQLString content:GraphQLString -m create update destroy
  ```
 
 # Query Example

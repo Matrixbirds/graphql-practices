@@ -15,14 +15,14 @@ module.exports = ({
        args: {<% for( const [field_name, field_type] of fields_table ) { %>
            <%= field_name %>: { type:  <%= field_type %> },
        <%} %>},
-       resolve: (object, {<%= fields %>}) => {
-           return Models.<%= type_name %>.<%=mutation%>(<%= fields %>);
+       resolve: (object, args) => {
+           return Models.<%= name %>.<%=mutation%>(args);
        }
     };
     <% } %>
 
     const <%= mutation_name %> = {<% for (let mutation of mutations) {%>
-        <%= mutation %>: <%= mutation %>Mutation,
-    <%}%>}
+        <%= mutation %>: <%= mutation %>Mutation,<%}%>
+    }
     return <%= mutation_name %>;
 }

@@ -8,18 +8,17 @@ module.exports = ({
     GraphQLInt
 }) => {
     const [Models, Types] = [require('../../models'), require('../types')];
-
-    <% for (let mutation of mutations) {%>
+<% for (let mutation of mutations) {%>
     const <%= mutation %>Mutation = {
        type: <%= type_name %>.itemType,
        args: {<% for( const [field_name, field_type] of fields_table ) { %>
-           <%= field_name %>: { type:  <%= field_type %> },
-       <%} %>},
+           <%= field_name %>: { type:  <%= field_type %> },<%} %>
+       },
        resolve: (object, args) => {
            return Models.<%= name %>.<%=mutation%>(args);
        }
     };
-    <% } %>
+<% } %>
 
     const <%= mutation_name %> = {<% for (let mutation of mutations) {%>
         <%= mutation %>: <%= mutation %>Mutation,<%}%>

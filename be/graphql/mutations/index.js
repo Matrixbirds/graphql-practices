@@ -1,19 +1,12 @@
 'use strict';
 
-const Mutations = {};
 const graphql = require('graphql');
 const path = require('path');
 const basename = path.basename(module.filename);
 
+const {importSubModule} = require('../../../utils');
 
-const {readdirSync, fileFormat} = require('../../../utils');
-
-readdirSync(__dirname, basename)
-    .filter(fileFormat('.mutations.js'))
-    .forEach(file => {
-        const _mutation = require(path.join(__dirname, file));
-        Mutations[_mutation.name] = _mutation(graphql);
-    })
+const Mutations = importSubModule(__dirname, '.mutation.js')(graphql);
 
 function Mutation({
     GraphQLObjectType,
@@ -29,7 +22,7 @@ function Mutation({
         name: 'Mutation',
         description: 'Mutation Root',
         fields: () => ({
-            createUser: Mutations.User.create,
+            createUser: Mutations.UsersMutation.create,
         })
     });
 };

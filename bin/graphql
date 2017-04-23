@@ -1,25 +1,26 @@
 #!/usr/bin/env node
 if (require.main === module) {
 
-    const USAGE = 'GraphQL Code Snippets Generator\n\n Usage: <cmd> [options]\n\n';
-    const EXAMPLE = 'E.g.:  ./bin/graphql types -n <type-name> -attrs id:GraphQLInt title:GraphQLString';
+    const USAGE = 'GraphQL Code Snippets Generator\n\n Usage: <operation> <resource_name> [options]\n\n';
+    const EXAMPLE = 'E.g.:  ./bin/graphql type <name> -attrs id:GraphQLInt title:GraphQLString';
     const yargs = require('yargs');
     const argv = yargs
         .usage(USAGE)
         .help('help').alias('help', 'h')
         .version('0.0.1', 'version').alias('version', 'V')
-        .command('types', 'generate types')
-        .command('mutations', 'generate mutations')
+        .command('type', 'generate type')
+        .command('mutation', 'generate mutation')
         .example(EXAMPLE)
         .options({
-            name: {
-                alias: 'n',
-                description: '<filename> - graphql type file',
-            },
             attributes: {
                 array: true,
                 alias: 'attrs',
                 description: '<field1:type1> <field2:type2> ... - graphql Attributes',
+            },
+            mutations: {
+                array: true,
+                alias: 'm',
+                description: '<mutation> ... - graphql Mutations',
             }
         })
         .argv;
@@ -39,30 +40,29 @@ if (require.main === module) {
             CodeSnippets[path.basename(file).split('.ejs')[0]] = _file;
         });
 
-    function generateFile(src, filepath, options) {
-        const data = ejs.render(src, options);
-        fs.writeFileSync(filepath, data, { encoding: 'utf8', flag: 'w' });
+    function generateFile(type, {filename, options}) {
+        const src = CodeSnippets[type];
+        if (type === 'type') {
+            options.mutations = options.mutation_name = undefined;
+        }
+        const data = ejs.render(src,options);
+        fs.writeFileSync(filename, data, { encoding: 'utf8', flag: 'w' });
+        return filename;
     }
 
-    function parseArgvAttrs(argv) {
+    function parseAttrs(argv) {
         const attrs = {};
         for (const e of argv) {
             let [k, v] = e.split(':');
             attrs[k] = v;
         }
-        return attrs;
+        return Object.entries(attrs);
     }
 
-    const graphqlPath = {
-        'types': path.join(__dirname, '../be/graphql/types'),
-        'mutations': path.join(__dirname, '../be/graphql/mutations'),
+    const resourcePath = (resource, name) => {
+        const _path = path.join(__dirname, `../be/graphql/${resource}s`);
+        return `${_path}/${name.toLowerCase()}.${resource}.js`;
     }
-
-    const graphqlFileSuffix = {
-        'types': 'types.js',
-        'mutations': 'mutations.js',
-    }
-
 
 //    console.log(CodeSnippets);
     if (argv._.length < 0) {
@@ -70,25 +70,37 @@ if (require.main === module) {
     }
 
     const {camelCase} = require('../utils');
-    if (argv.name && argv.attributes.length >= 0 && argv._.length == 1) {
-        const attrs = parseArgvAttrs(argv.attributes);
-        switch (argv._[0]) {
-            case 'types':
-                const filepath = `${graphqlPath.types}/${argv.name}.${graphqlFileSuffix.types}`;
-                generateFile(CodeSnippets['types'], filepath, {
-                    type_name: camelCase(`${argv.name}Type`),
-                    name: camelCase(argv.name),
-                    field_tables: attrs
-                });
-                console.log(`generate types file at ${filepath}`);
-                break;
-            case 'mutations':
-                throw('NoImplemtionException');
-                break;
-            default:
-                console.log(`[WARN] Unrecognized for cmd: ${argv._[0]}`);
-                break;
+
+    const resourceHandler = (resource, args) => generateFile(resource, args);
+
+    const executeGenerateResource = (resource, options) => resourceHandler(resource, options);
+
+    const CommandHandler = ({ _, attributes, mutations }) => {
+        let [cmd, name] = _;
+        name = camelCase(name);
+        const attrs = parseAttrs(attributes);
+        if (cmd && name && ['type', 'mutation'].includes(cmd) && attrs.length > 0 ) {
+            const generateOptions = {
+                name: name,
+                type_name: `${name}Type`,
+                mutation_name: `${name}Mutation`,
+                fields_table: attrs,
+                fields: attrs.map(e => e[0]).join(','),
+                mutations: mutations
+            };
+            const options = {
+                filename: resourcePath(cmd, name),
+                options: generateOptions
+            };
+            const file = executeGenerateResource(cmd, options);
+            if (file) console.log(`generate types file at ${file}`);
+            else throw new Error(`Command: ${cmd} not Found`);
         }
-        return false;
+    }
+
+    try {
+        CommandHandler(argv);
+    } catch(err) {
+        console.log(err);
     }
 }

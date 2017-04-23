@@ -1,14 +1,14 @@
 'use strict';
-module.exports = function User({
+module.exports = ({
     GraphQLObjectType,
     GraphQLSchema,
     GraphQLString,
     GraphQLList,
     GraphQLNonNull,
     GraphQLInt
-}) {
+}) => {
     const {User} = require('../../models');
-    const {User: UserType} = require('../types');
+    const {UserType} = require('../types');
     const createMutation = {
        type: UserType.itemType,
        args: {

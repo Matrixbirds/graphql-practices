@@ -1,12 +1,12 @@
 'use strict';
-module.exports = function Comment({
+module.exports = ({
     GraphQLObjectType,
     GraphQLSchema,
     GraphQLString,
     GraphQLList,
     GraphQLNonNull,
     GraphQLInt
-}) {
+}) => {
     const {Comment} = require('../../models');
     const CommentType = new GraphQLObjectType({
     name: 'comment' ,

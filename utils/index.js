@@ -38,13 +38,32 @@ function camelCase(str) {
     }, '');
 }
 
+
+const fileFormat = format => (file => (file.indexOf('.') !== 0) && (file.slice(-format.length) === format));
+
+function importSubModule(dir, format) {
+    const path = require('path');
+    const filename = path.basename(module.filename);
+    return dep => (
+        readdirSync(dir, filename)
+                    .filter(fileFormat(format))
+                    .reduce((res, file)=> {
+                        const _module = require(path.join(dir, file));
+                        const name = camelCase(path.basename(file).split('.js')[0]);
+                        res[name] = _module(dep);
+                        return res;
+                    }, {})
+    );
+}
+
 setProps(exports, {
     setProps: setProps,
     readdirSync: readdirSync,
     inspectPrototype: inspectPrototype,
     freezeRequire: freezeRequire,
     camelCase: camelCase,
-    fileFormat: format => (file => (file.indexOf('.') !== 0) && (file.slice(-format.length) === format))
+    fileFormat: fileFormat,
+    importSubModule: importSubModule,
 });
 
 

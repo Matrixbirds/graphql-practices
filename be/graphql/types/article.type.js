@@ -1,12 +1,12 @@
 'use strict';
-module.exports = function Article({
+module.exports = ({
     GraphQLObjectType,
     GraphQLSchema,
     GraphQLString,
     GraphQLList,
     GraphQLNonNull,
     GraphQLInt,
-}) {
+}) => {
     const {Article} = require('../../models');
     const Articletype = new GraphQLObjectType({
         name: 'Article' ,
@@ -21,7 +21,7 @@ module.exports = function Article({
             },
             content: {
                 type: GraphQLString,
-            },
+            }
         })
     });
     return {

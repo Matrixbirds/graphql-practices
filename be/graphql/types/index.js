@@ -1,18 +1,12 @@
 'use strict';
 
-const Types = {};
 const graphql = require('graphql');
 const path = require('path');
 const basename  = path.basename(module.filename);
 
-const {readdirSync, fileFormat} = require('../../../utils');
+const {importSubModule} = require('../../../utils');
 
-readdirSync(__dirname, basename)
-    .filter(fileFormat('.types.js'))
-    .forEach(file => {
-        const _type = require(path.join(__dirname, file));
-        Types[_type.name] = _type(graphql);
-    });
+const Types = importSubModule(__dirname, '.type.js')(graphql);
 
 function QueryType({
     GraphQLObjectType,
@@ -28,10 +22,10 @@ function QueryType({
         name: 'BlogSchema',
         description: 'Root of the Blog Schema',
         fields: () => ({
-            users: definePaginateType(Types.User),
-            comments: definePaginateType(Types.Comment),
-            user: defineEntityType(Types.User),
-            comment: defineEntityType(Types.Comment),
+            users: definePaginateType(Types.UserType),
+            comments: definePaginateType(Types.CommentType),
+            user: defineEntityType(Types.UserType),
+            comment: defineEntityType(Types.CommentType),
         })
     });
 };

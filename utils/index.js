@@ -100,5 +100,5 @@ defineMethod(exports, 'isEmpty', ({ length }) => {
 })
 
 setProps(exports, {
-    authToken: require('./authentication')
+    GraphQLHandler: require('./authentication')
 })

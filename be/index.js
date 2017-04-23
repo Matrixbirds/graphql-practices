@@ -1,12 +1,9 @@
-const {setProps, authToken} = require('../utils');
+const {setProps, GraphQLHandler} = require('../utils');
 const config = require('./config');
-
-const GraphQLSchema = require('./graphql');
 
 const Koa = require('koa');
 const KoaRouter = require('koa-router');
 const KoaBody = require('koa-bodyparser');
-const graphqlKoa = require('graphql-server-koa').graphqlKoa;
 
 const app = new Koa();
 require('koa-trace')(app);
@@ -24,17 +21,8 @@ app.use(async (ctx, next) => {
 
 app.use(KoaBody());
 
-const GraphQLHandlerWithAuth = async (ctx, next) => {
-    return graphqlKoa({
-        schema: GraphQLSchema,
-        context: {
-            currentUser: authToken(ctx.request.header)
-        },
-    })(ctx, next);
-}
-
-router.post('/graphql', GraphQLHandlerWithAuth);
-router.get('/graphql', GraphQLHandlerWithAuth);
+router.post('/graphql', GraphQLHandler);
+router.get('/graphql', GraphQLHandler);
 
 app.use(router.routes());
 app.use(router.allowedMethods());

@@ -18,8 +18,8 @@ module.exports = ({
        args: {
            user: { type: UserAttributesType },
        },
-       resolve: (object, args) => {
-           return Models.User.create(args);
+       resolve: (object, {user}, ctx) => {
+           return Models.User.create(user);
        }
     };
 

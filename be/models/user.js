@@ -35,6 +35,13 @@ module.exports = function(sequelize, DataTypes) {
                 User.hasMany(models.Comment, { foreignKey: 'user_id' });
                 User.hasMany(models.Article, { foreignKey: 'user_id' });
             },
+            findByJwt: function(token) {
+                const payload = jwt.decode(token);
+                if (!payload) throw new Error("Token is Invalid");
+                const data = payload['data'];
+                if (!data) throw new Error("Token is Invalid");
+                return User.findById(data.id);
+            }
         },
         instanceMethods: {
             generateHash(password) {

@@ -42,7 +42,9 @@ module.exports = function({
             page: { type: GraphQLInt },
             per: { type: GraphQLInt },
         },
-        resolve: (root, {page, per}) => {
+        async resolve (root, {page, per}, context) {
+            const user = await context.currentUser.then(e => e.get({plain: true}));
+            console.log('currentUser', user);
             page = Math.max(page-1, 0);
             if ( per <=0 ) per = 5;
             return model.findAndCountAll({

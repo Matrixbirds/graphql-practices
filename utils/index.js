@@ -98,3 +98,7 @@ defineMethod(exports, 'isFalsy', args => {
 defineMethod(exports, 'isEmpty', ({ length }) => {
     length < 1 ? true : false
 })
+
+setProps(exports, {
+    authToken: require('./authentication')
+})

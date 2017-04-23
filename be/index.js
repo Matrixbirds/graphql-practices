@@ -1,4 +1,4 @@
-const setProps = require('../utils').setProps;
+const {setProps, authToken} = require('../utils');
 const config = require('./config');
 
 const GraphQLSchema = require('./graphql');
@@ -14,9 +14,6 @@ if (process.env.NODE_ENV !== 'production') app.debug();
 const router = new KoaRouter();
 const PORT = config.get('PORT');
 
-router.post('/graphql', graphqlKoa({ schema: GraphQLSchema}));
-router.get('/graphql', graphqlKoa({ schema: GraphQLSchema}));
-
 const crypto = require('crypto');
 app.use(async (ctx, next) => {
     ctx.id = crypto.randomBytes(12);
@@ -24,7 +21,21 @@ app.use(async (ctx, next) => {
     await next();
     ctx.trace('finish');
 })
+
 app.use(KoaBody());
+
+const GraphQLHandlerWithAuth = async (ctx, next) => {
+    return graphqlKoa({
+        schema: GraphQLSchema,
+        context: {
+            currentUser: authToken(ctx.request.header)
+        },
+    })(ctx, next);
+}
+
+router.post('/graphql', GraphQLHandlerWithAuth);
+router.get('/graphql', GraphQLHandlerWithAuth);
+
 app.use(router.routes());
 app.use(router.allowedMethods());
 

@@ -56,11 +56,22 @@ module.exports = ({
        }
     };
 
+    const loginMutation = {
+        type: UserType,
+        args: {
+            name: { type: new GraphQLNonNull(GraphQLString) },
+            password: { type: new GraphQLNonNull(GraphQLString) },
+        },
+        resolve: async (object, args) => (
+            Models.User.authentication(args)
+        )
+    };
 
     const UserMutation = {
         create: createMutation,
         update: updateMutation,
         destroy: destroyMutation,
+        login: loginMutation
     }
     return UserMutation;
 }

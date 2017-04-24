@@ -23,6 +23,7 @@ function Mutation({
         description: 'Mutation Root',
         fields: () => ({
             createUser: Mutations.UserMutation.create,
+            login: Mutations.UserMutation.login,
             updateUser: Mutations.UserMutation.update,
             destroyUser: Mutations.UserMutation.destroy,
             createArticle: Mutations.ArticleMutation.create,

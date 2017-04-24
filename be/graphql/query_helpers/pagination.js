@@ -43,7 +43,7 @@ module.exports = function({
             per: { type: GraphQLInt },
         },
         async resolve (root, {page, per}, context) {
-            const user = await context.currentUser.then(e => e.get({plain: true}));
+            const user = await context.currentUser;
             console.log('currentUser', user);
             page = Math.max(page-1, 0);
             if ( per <=0 ) per = 5;

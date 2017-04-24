@@ -41,6 +41,12 @@ module.exports = function(sequelize, DataTypes) {
                 const data = payload['data'];
                 if (!data) throw new Error("Token is Invalid");
                 return User.findById(data.id);
+            },
+            async authentication({name, password}) {
+                const user = await User.findOne({name: name});
+                if (!user) throw Error(`User Not found`);
+                if (!user.validPassword(password)) throw Error("Invalid Password");
+                return user;
             }
         },
         instanceMethods: {

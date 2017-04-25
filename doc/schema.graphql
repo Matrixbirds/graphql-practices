@@ -1,0 +1,128 @@
+interface Node {
+    id: ID!
+}
+
+scalar DateScalarType
+
+interface CommentInterface implements Node {
+    title: String
+    content: String
+}
+
+type MyselfCommentType implements CommentInterface {
+    title: String
+    content: String
+    created_at: DateScalarType
+    updated_at: DateScalarType
+}
+
+type RepliedCommentType implements CommentInterface {
+    title: String
+    content: String
+    created_at: DateScalarType
+    updated_at: DateScalarType
+    author: UserType
+}
+
+type UserType implements Node {
+    id: id
+    name: name
+}
+
+type CommentType implements CommentInterface {
+    title: String
+    content: String
+    created_at: DateScalarType
+    updated_at: DateScalarType
+    author: UserType
+}
+
+type MyCommentsType {
+    myself: MyselfCommentType
+    replied: RepliedCommentType
+}
+
+interface UserOutputInterface implements Node {
+    id: ID!
+    name: String
+}
+
+interface UserProfileType {
+    name: String
+    both: DateScalarType
+    country: CountryScalarType
+}
+
+type UserProfileType implements UserProfileType {
+    name: String
+    both: DateScalarType
+    country: CountryScalarType
+    created_at: DateScalarType
+    updated_at: DateScalarType
+}
+
+input UserProfileInput implements UserProfileType {
+    name: String!
+    both: DateScalarType!
+    country: CountryScalarType!
+}
+
+input PasswordInput {
+    old_password: String!
+    newpassword: String!
+}
+
+type ArticleType implements Node {
+    title: String
+    content: String
+    author: UserType
+    comments: CommentsType
+}
+
+type PaginationType {
+    total_page: Int
+    total_count: Int
+    current_page: Int
+    current_count: Int
+}
+
+interface PaginationInterface {
+    data: List
+    meta: PaginationType
+}
+
+type ArticlesType implements PaginationInterface {
+    data: List(ArticleType)
+    meta: PaginationType
+}
+
+type CommentsType implements PaginationInterface {
+    data: List(CommentType)
+    meta: PaginationType
+}
+
+
+
+type me {
+    token: TokenType
+    profile: UserProfileType
+    articles(page: Int! per: Int!): ArticlesType
+    article(id: ID!) ArticleType
+    comments: MyCommentsType
+    changePassword: PasswordInput
+}
+
+mutation me {
+    createArticle: createArticleMutation
+    editArticle(id: ID!): editArticleMutation
+    removeArticle(id: ID!): removeArticleMutation
+    replyArticle(id: ID!): replyArticleMutation
+    replyComment(id: ID!): replyCommentMutation
+    removeComment(id: ID!): removeCommentMutation
+}
+
+
+type latest {
+    articles(page: Int! per: Int!): ArticlesType
+    article(id: ID!) ArticleType
+}

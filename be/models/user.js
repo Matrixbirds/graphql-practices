@@ -47,7 +47,10 @@ module.exports = function(sequelize, DataTypes) {
                 if (!user) throw Error(`User Not found`);
                 if (!user.validPassword(password)) throw Error("Invalid Password");
                 return user;
-            }
+            },
+            generateJWT({id, name, updated_at}) {
+                jwt.encode({data: {id: id, name: name, updated_at: updated_at}})
+            },
         },
         instanceMethods: {
             generateHash(password) {
@@ -55,6 +58,11 @@ module.exports = function(sequelize, DataTypes) {
             },
             validPassword(password) {
                 return bcrypt.compareSync(password, this.getDataValue('password_digest'));
+            },
+            get token() {
+                console.log(this);
+                const {id, name, updated_at} = this;
+                return jwt.encode({data: {id: id, name: name, updated_at: updated_at}})
             }
         },
         underscored: true

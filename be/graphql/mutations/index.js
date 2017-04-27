@@ -18,20 +18,14 @@ function Mutation({
 }) {
     const { defineMutationType } = require('../query_helpers');
 
+    const UserType = require('../types');
+
     return new GraphQLObjectType({
         name: 'Mutation',
         description: 'Mutation Root',
         fields: () => ({
-            createUser: Mutations.UserMutation.create,
-            login: Mutations.UserMutation.login,
-            updateUser: Mutations.UserMutation.update,
-            destroyUser: Mutations.UserMutation.destroy,
-            createArticle: Mutations.ArticleMutation.create,
-            updateArticle: Mutations.ArticleMutation.update,
-            destroyArticle: Mutations.ArticleMutation.destroy,
-            createComment: Mutations.CommentMutation.create,
-            updateComment: Mutations.CommentMutation.update,
-            destroyComment: Mutations.CommentMutation.destroy,
+            signUp: Mutations.UserMutation.signUp,
+            signIn: Mutations.UserMutation.signIn,
         })
     });
 };

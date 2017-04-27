@@ -7,8 +7,7 @@ module.exports = ({
     GraphQLList,
     GraphQLNonNull,
     GraphQLInt
-}) => {
-    const {jwt} = require('../../../utils');
+}) => { const {jwt} = require('../../../utils');
     const UserType = new GraphQLObjectType({
         name: 'user',
         description: '...',
@@ -28,29 +27,20 @@ module.exports = ({
             },
             token: {
                 type: GraphQLString,
-                resolve: ({id,name,updated_at}) => jwt.encode({data: {id: id, name: name, updated_at: updated_at}})
             }
         })
     });
 
-   const attributesUserType = new GraphQLInputObjectType({
-        name: 'UserAttributesType',
-        description: 'only for mutation attributes',
+    const authInputType = new GraphQLInputObjectType({
+        name: 'authInput',
         fields: () => ({
-            id: {
-                type: GraphQLInt,
-            },
-            password: {
-                type: new GraphQLNonNull(GraphQLString),
-            },
-            name: {
-                type: new GraphQLNonNull(GraphQLString),
-            }
+            name: { type: new GraphQLNonNull(GraphQLString) },
+            password: { type: new GraphQLNonNull(GraphQLString) },
         })
     });
 
     return {
         query: UserType,
-        attributes: attributesUserType,
+        authInput: authInputType,
     };
 }

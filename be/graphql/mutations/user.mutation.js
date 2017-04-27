@@ -9,69 +9,31 @@ module.exports = ({
 }) => {
     const [Models, Types] = [require('../../models'), require('../types')];
 
-    const UserType = Types.UserType.query;
-    const UserAttributesType = Types.UserType.attributes;
-    const {OperateStatusType} = require('../query_helpers');
+    const {query: UserType, authInput: authInputType} = Types.UserType;
 
-    const createMutation = {
-       type: UserType,
-       args: {
-           user: { type: UserAttributesType },
-       },
-       resolve: (object, {user}, ctx) => {
-           return Models.User.create(user);
-       }
-    };
-
-    const updateMutation = {
-       type: UserType,
-       args: {
-           user: { type: UserAttributesType },
-           id: { type: new GraphQLNonNull(GraphQLInt) }
-       },
-        resolve: async (object, { user, id }) => {
-           let record = await Models.User.findById(id);
-           if (record) {
-               return record.update(user, { fields: ['name', 'password'] });
-           } else {
-               throw Error("找不到用户");
-          }
-       }
-    };
-
-    const destroyMutation = {
-       type: OperateStatusType,
-       args: {
-           id: { type: new GraphQLNonNull(GraphQLInt) },
-       },
-       resolve: async (object, {id}) => {
-           let record = await Models.User.findById(id);
-           if (record) {
-               return record.destroy().then(res => {
-                   return { success: res }
-               });
-           } else {
-              throw Error("找不到用户");
-           }
-       }
-    };
-
-    const loginMutation = {
+    const signUpMutation = {
         type: UserType,
         args: {
-            name: { type: new GraphQLNonNull(GraphQLString) },
-            password: { type: new GraphQLNonNull(GraphQLString) },
+            input: {type: new GraphQLNonNull(authInputType)},
         },
-        resolve: async (object, args) => (
-            Models.User.authentication(args)
+        resolve: (_, {input}) => (
+            Models.User.authentication(input)
+        )
+    };
+
+    const signInMutation = {
+        type: UserType,
+        args: {
+            input: {type: new GraphQLNonNull(authInputType)},
+        },
+        resolve: (_, {input}) => (
+            Models.User.authentication(input)
         )
     };
 
     const UserMutation = {
-        create: createMutation,
-        update: updateMutation,
-        destroy: destroyMutation,
-        login: loginMutation
+        signUp: signUpMutation,
+        signIn: signInMutation,
     }
     return UserMutation;
 }

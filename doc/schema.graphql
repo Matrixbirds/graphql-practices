@@ -42,18 +42,13 @@ type MyCommentsType {
     replied: RepliedCommentType
 }
 
-interface UserOutputInterface implements Node {
-    id: ID!
-    name: String
-}
-
-interface UserProfileType {
+interface UserProfileInterface {
     name: String
     both: DateScalarType
     country: CountryScalarType
 }
 
-type UserProfileType implements UserProfileType {
+type UserProfileType implements UserProfileInterface {
     name: String
     both: DateScalarType
     country: CountryScalarType
@@ -101,10 +96,12 @@ type CommentsType implements PaginationInterface {
     meta: PaginationType
 }
 
+type userAuthInput {
+    name: GraphQLString!
+    password: GraphQLString!
+}
 
-
-type me {
-    token: TokenType
+type meType {
     profile: UserProfileType
     articles(page: Int! per: Int!): ArticlesType
     article(id: ID!) ArticleType
@@ -112,7 +109,14 @@ type me {
     changePassword: PasswordInput
 }
 
-mutation me {
+type latestType {
+    articles(page: Int! per: Int!): ArticlesType
+    article(id: ID!) ArticleType
+}
+
+mutation {
+    signUp(input: userAuthInput!): signUpMutation
+    signIn(input: userAuthInput!): signInMutation
     createArticle: createArticleMutation
     editArticle(id: ID!): editArticleMutation
     removeArticle(id: ID!): removeArticleMutation
@@ -121,8 +125,8 @@ mutation me {
     removeComment(id: ID!): removeCommentMutation
 }
 
-
-type latest {
-    articles(page: Int! per: Int!): ArticlesType
-    article(id: ID!) ArticleType
+query {
+    latest: latestType
+    authToken: TokenType
+    me: meType
 }

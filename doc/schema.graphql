@@ -114,12 +114,18 @@ type latestType {
     article(id: ID!) ArticleType
 }
 
+type ArticleInput {
+    id: ID
+    title: String!
+    content: String!
+}
+
 mutation {
     signUp(input: userAuthInput!): signUpMutation
     signIn(input: userAuthInput!): signInMutation
-    createArticle: createArticleMutation
-    editArticle(id: ID!): editArticleMutation
-    removeArticle(id: ID!): removeArticleMutation
+    createArticle(input: ArticleInput!): createArticleMutation
+    editArticle(input: ArticleInput!): editArticleMutation
+    removeArticle(input: ArticleInput!): removeArticleMutation
     replyArticle(id: ID!): replyArticleMutation
     replyComment(id: ID!): replyCommentMutation
     removeComment(id: ID!): removeCommentMutation

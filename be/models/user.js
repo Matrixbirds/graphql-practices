@@ -49,7 +49,7 @@ module.exports = function(sequelize, DataTypes) {
                 return user;
             },
             generateJWT({id, name, updated_at}) {
-                jwt.encode({data: {id: id, name: name, updated_at: updated_at}})
+                return jwt.encode({data: {id: id, name: name, updated_at: updated_at}})
             },
         },
         instanceMethods: {

@@ -7,7 +7,7 @@ module.exports = ({
     GraphQLList,
     GraphQLNonNull,
     GraphQLInt
-}) => { const {jwt} = require('../../../utils');
+}, _, {DateScalar}) => { const {jwt} = require('../../../utils');
     const UserType = new GraphQLObjectType({
         name: 'user',
         description: '...',
@@ -20,10 +20,10 @@ module.exports = ({
                 type: GraphQLInt,
             },
             created_at: {
-                type: GraphQLString
+                type: DateScalar,
             },
             updated_at: {
-                type: GraphQLString
+                type: DateScalar,
             },
             token: {
                 type: GraphQLString,

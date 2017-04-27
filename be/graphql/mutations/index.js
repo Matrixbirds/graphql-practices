@@ -2,11 +2,12 @@
 
 const graphql = require('graphql');
 const models = require('../../models');
+const types = require('../types');
 
 const { __meta__ } =
     require('../../../utils').module({
         format: '.mutation.js',
-        deps: [graphql, models],
+        deps: [graphql, models, types],
         dir: require('path').resolve(__dirname, '.')
     });
 
@@ -22,7 +23,7 @@ function Mutation ({
     GraphQLInt
 }) {
     const { defineMutationType } = require('../query_helpers');
-    const { UserMutation } = __meta__;
+    const { UserMutation, ArticleMutation } = __meta__;
 
     return new GraphQLObjectType({
         name: 'Mutation',
@@ -30,6 +31,9 @@ function Mutation ({
         fields: () => ({
             signUp: UserMutation.signUp,
             signIn: UserMutation.signIn,
+            createArticle: ArticleMutation.create,
+            editArticle: ArticleMutation.edit,
+            removeArticle: ArticleMutation.destroy,
         })
     });
 };

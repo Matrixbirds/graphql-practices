@@ -16,9 +16,9 @@ module.exports = ({
         args: {
             input: {type: new GraphQLNonNull(authInputType)},
         },
-        resolve: (_, {input}) => (
-            Models.User.authentication(input)
-        )
+        resolve: (_, {input}) => {
+            return Models.User.create(input)
+        }
     };
 
     const signInMutation = {

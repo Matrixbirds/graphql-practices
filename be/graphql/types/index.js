@@ -2,11 +2,12 @@
 
 const graphql = require('graphql');
 const models = require('../../models');
+const scalars = require('../scalars');
 
 const { __meta__ } =
     require('../../../utils').module({
         format: '.type.js',
-        deps: [graphql, models],
+        deps: [graphql, models, scalars],
         dir: require('path').resolve(__dirname, '.')
     });
 

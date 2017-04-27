@@ -1,19 +1,13 @@
 'use strict';
 
 const graphql = require('graphql');
-const path = require('path');
-const basename = path.basename(module.filename);
-
-const {importSubModule} = require('../../../utils');
-
-const Interfaces = importSubModule(__dirname, '.interface.js')(graphql);
-
-Interfaces.export = () => (
+const { __meta__ } =
     require('../../../utils').module({
         format: '.interface.js',
-        deps: [require('graphql')],
+        deps: [graphql, require('../scalars')],
         dir: require('path').resolve(__dirname, '.')
-    }).__meta__
-)
+    });
 
+const Interfaces = {};
+Object.assign(Interfaces, __meta__);
 module.exports = Interfaces;

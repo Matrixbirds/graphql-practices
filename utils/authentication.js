@@ -17,7 +17,9 @@ const GraphQLHandler = async (ctx, next) => {
     return graphqlKoa({
         schema: GraphQLSchema,
         context: {
-            currentUser: authToken(ctx.request.header)
+            get currentUser() {
+                return authToken(ctx.request.header)
+            }
         },
     })(ctx, next);
 }

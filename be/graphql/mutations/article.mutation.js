@@ -6,48 +6,52 @@ module.exports = ({
     GraphQLList,
     GraphQLNonNull,
     GraphQLInt
-}) => {
-    const [Models, Types] = [require('../../models'), require('../types')];
+}, {Article}, Types) => {
 
-    const ArticleType = Types.ArticleType.attributes;
+    const {input: ArticleInputType, query: ArticleType} = Types.ArticleType;
 
     const createMutation = {
         type: ArticleType,
         args: {
-            title: { type:  GraphQLString },
-            content: { type:  GraphQLString },
+            input: { type: new GraphQLNonNull(ArticleInputType) }
         },
-        resolve: (object, args) => {
-            return Models.Article.create(args);
+        async resolve(object, {input}, {currentUser}) {
+            const {dataValues: {id: user_id}} = await currentUser;
+            Object.assign(input, {user_id: user_id});
+            return Article.create(input);
         }
      };
 
-    const updateMutation = {
+    const editMutation = {
         type: ArticleType,
         args: {
-            title: { type:  GraphQLString },
-            content: { type:  GraphQLString },
+            input: { type: new GraphQLNonNull(ArticleInputType) }
         },
-        resolve: (object, args) => {
-            return Models.Article.update(args);
+        async resolve(object, {input}, {currentUser}) {
+            const {dataValues: {id: user_id}} = await currentUser;
+            const record = await Article.findOne({where: {id: input.id, user_id: user_id}})
+            if (!record) throw Error(`Article id: ${id}'s Not Found`)
+            return record.update(input, {fields: ['content', 'title']});
         }
     };
 
     const destroyMutation = {
         type: ArticleType,
         args: {
-            title: { type:  GraphQLString },
-            content: { type:  GraphQLString },
+            input: { type: new GraphQLNonNull(ArticleInputType) }
         },
-        resolve: (object, args) => {
-            return Models.Article.destroy(args);
+        async resolve(object, {input}, {currentUser}) {
+            const {dataValues: {id: user_id}} = await currentUser;
+            const record = await Article.findOne({where: {id: input.id, user_id: user_id}})
+            if (!record) throw Error(`Article id: ${id}'s Not Found`)
+            return record.destroy({});
         }
     };
 
 
     const ArticleMutation = {
         create: createMutation,
-        update: updateMutation,
+        edit: editMutation,
         destroy: destroyMutation,
     }
     return ArticleMutation;

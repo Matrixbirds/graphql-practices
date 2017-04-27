@@ -20,7 +20,7 @@ Object.defineProperty(Scalars, 'DateScalar', {
     })
 })
 
-Object.defineProperty(Scalars, 'CountryEnum', {
+Object.defineProperty(Scalars, 'CountryScalar', {
     enumerable: true,
     value: new graphql.GraphQLEnumType({
         name: 'CountryEnum',

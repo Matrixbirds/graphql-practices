@@ -1,19 +1,17 @@
 'use strict';
 
-const {CountryScalarType} = require('../scalars');
-
 module.exports = ({
     GraphQLInterfaceType,
     GraphQLNonNull,
     GraphQLString,
-}) => {
+}, {DateScalar, CountryScalar}) => {
     const UserProfileInterface = new GraphQLInterfaceType({
         name: 'UserProfileInterface',
         fields: {
-            name: GraphQLString,
-            birthday: GraphQLString,
-            country: CountryScalarType,
-        }
+            name: { type: GraphQLString },
+            birthday: { type: DateScalar },
+            country: { type: CountryScalar },
+        },
     })
     return {
         default: UserProfileInterface,

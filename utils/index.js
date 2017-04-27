@@ -102,3 +102,7 @@ defineMethod(exports, 'isEmpty', ({ length }) => {
 setProps(exports, {
     GraphQLHandler: require('./authentication')
 })
+
+setProps(exports, {
+    FactoryFuta: require('./factory-futa')
+})

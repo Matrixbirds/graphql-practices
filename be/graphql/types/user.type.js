@@ -27,6 +27,7 @@ module.exports = ({
             },
             token: {
                 type: GraphQLString,
+                resolve: ({id,name,updated_at}) => jwt.encode({data: {id: id, name: name, updated_at: updated_at}})
             }
         })
     });

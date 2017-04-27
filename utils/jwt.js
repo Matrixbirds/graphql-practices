@@ -1,5 +1,5 @@
 'use strict';
-const config = require('../be/config');
+const config = require('../be/config/env');
 
 module.exports = ({ freezeRequire })=> {
     const JWT = freezeRequire('jsonwebtoken');

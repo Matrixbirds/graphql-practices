@@ -4,8 +4,6 @@ module.exports = ({
     GraphQLInterfaceType,
     GraphQLString
 }) => {
-
-    console.log(GraphQLInterfaceType);
     const CommentInterface = new GraphQLInterfaceType({
         name: 'commentInterface',
         fields: {

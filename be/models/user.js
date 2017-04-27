@@ -58,11 +58,6 @@ module.exports = function(sequelize, DataTypes) {
             },
             validPassword(password) {
                 return bcrypt.compareSync(password, this.getDataValue('password_digest'));
-            },
-            get token() {
-                console.log(this);
-                const {id, name, updated_at} = this;
-                return jwt.encode({data: {id: id, name: name, updated_at: updated_at}})
             }
         },
         underscored: true

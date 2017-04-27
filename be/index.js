@@ -1,5 +1,5 @@
 const {setProps, GraphQLHandler} = require('../utils');
-const config = require('./config');
+const {env: config} = require('./config');
 
 const Koa = require('koa');
 const KoaRouter = require('koa-router');
@@ -35,4 +35,5 @@ if (require.main === module) {
         app: app
     });
     setProps(exports, require('./models'));
+    setProps(exports, require('../utils'));
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = ({factory: { define }, __dict__}) => {
+module.exports = ({ define , __dict__}) => {
     define('user', {
         name: 'matrixbirds',
         password: '10241024',

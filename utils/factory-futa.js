@@ -23,12 +23,7 @@ function FactoryFuta() {
             })
         })
     };
-    Object.defineProperty(this, 'factory', {
-        enumerable: true,
-        get: () => ({
-            define: define,
-        })
-    });
+    this.define = define;
 };
 
 

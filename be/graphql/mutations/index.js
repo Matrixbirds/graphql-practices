@@ -1,14 +1,19 @@
 'use strict';
 
 const graphql = require('graphql');
-const path = require('path');
-const basename = path.basename(module.filename);
+const models = require('../../models');
 
-const {importSubModule} = require('../../../utils');
+const { __meta__ } =
+    require('../../../utils').module({
+        format: '.mutation.js',
+        deps: [graphql, models],
+        dir: require('path').resolve(__dirname, '.')
+    });
 
-const Mutations = importSubModule(__dirname, '.mutation.js')(graphql);
+const Mutations = {};
+Object.assign(Mutations, __meta__);
 
-function Mutation({
+function Mutation ({
     GraphQLObjectType,
     GraphQLList,
     GraphQLString,
@@ -17,20 +22,17 @@ function Mutation({
     GraphQLInt
 }) {
     const { defineMutationType } = require('../query_helpers');
-
-    const UserType = require('../types');
+    const { UserMutation } = __meta__;
 
     return new GraphQLObjectType({
         name: 'Mutation',
         description: 'Mutation Root',
         fields: () => ({
-            signUp: Mutations.UserMutation.signUp,
-            signIn: Mutations.UserMutation.signIn,
+            signUp: UserMutation.signUp,
+            signIn: UserMutation.signIn,
         })
     });
 };
 
-
-Mutations['Mutation'] = Mutation;
-
+Mutations['Mutation'] = Mutation(graphql, models);
 module.exports = Mutations;

@@ -99,6 +99,8 @@ defineMethod(exports, 'isEmpty', ({ length }) => {
     length < 1 ? true : false
 })
 
+defineMethod(exports, 'module', require('./module'));
+
 setProps(exports, {
     GraphQLHandler: require('./authentication')
 })

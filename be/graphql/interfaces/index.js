@@ -8,4 +8,12 @@ const {importSubModule} = require('../../../utils');
 
 const Interfaces = importSubModule(__dirname, '.interface.js')(graphql);
 
+Interfaces.export = () => (
+    require('../../../utils').module({
+        format: '.interface.js',
+        deps: [require('graphql')],
+        dir: require('path').resolve(__dirname, '.')
+    }).__meta__
+)
+
 module.exports = Interfaces;

@@ -27,14 +27,12 @@ function FactoryFuta() {
 };
 
 
-const __meta__ = {
-    format: '.futa.js',
-    deps: [new FactoryFuta()],
-    dir: require('path').resolve(__dirname, '../spec/factories')
-};
-
 FactoryFuta.export = ()=> (
-    require('./module')(__meta__).__meta__
+    require('./module')({
+        format: '.futa.js',
+        deps: [new FactoryFuta()],
+        dir: require('path').resolve(__dirname, '../spec/factories')
+    }).__meta__
 )
 
 module.exports = FactoryFuta;

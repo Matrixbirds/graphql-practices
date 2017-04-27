@@ -27,7 +27,6 @@ function importSubModule({dir, format, deps}) {
         .reduce((res, file) => {
             const _module = require(path.join(dir, file));
             const name = camelCase(path.basename(file).split('.js')[0]);
-            console.log(...deps);
             res[name] = _module(...deps);
             return res;
         }, {})

@@ -1,21 +1,27 @@
 'use strict';
 
 const graphql = require('graphql');
-const path = require('path');
-const basename  = path.basename(module.filename);
+const models = require('../../models');
 
-const {importSubModule} = require('../../../utils');
+const { __meta__ } =
+    require('../../../utils').module({
+        format: '.type.js',
+        deps: [graphql, models],
+        dir: require('path').resolve(__dirname, '.')
+    });
 
-const Types = importSubModule(__dirname, '.type.js')(graphql);
-const Models = require('../../models');
+const Types = {};
+Object.assign(Types, __meta__);
 
-function QueryType({
+function Query ({
     GraphQLObjectType,
     GraphQLList,
     GraphQLString,
     GraphQLNonNull,
     GraphQLSchema,
     GraphQLInt
+}, {
+    User
 }) {
     const { definePaginateType, defineEntityType } = require('../query_helpers');
 
@@ -23,7 +29,7 @@ function QueryType({
         name: 'BlogSchema',
         description: 'Root of the Blog Schema',
         fields: () => ({
-            users: definePaginateType(Types.UserType.query, Models.User),
+            users: definePaginateType(Types.UserType.query, User),
 //            comments: definePaginateType(Types.CommentType.query, Models.Comment),
 //            user: defineEntityType(Types.UserType.query, Models.User),
 //            comment: defineEntityType(Types.CommentType.query, Models.Comment),
@@ -31,7 +37,6 @@ function QueryType({
     });
 };
 
-Types['QueryType'] = QueryType;
-
+Types['Query'] = Query(graphql, models);
 module.exports = Types;
 

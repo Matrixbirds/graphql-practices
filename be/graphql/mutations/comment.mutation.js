@@ -6,48 +6,44 @@ module.exports = ({
     GraphQLList,
     GraphQLNonNull,
     GraphQLInt
-}) => {
-    const [Models, Types] = [require('../../models'), require('../types')];
+}, {Comment}, Types) => {
 
-    const CommentType = Types.CommentType.attributes;
+    const {input: CommentInputType, query: CommentType} = Types.CommentType;
 
-    const createMutation = {
+    const replyArticle = {
+        type: CommenType,
+        args: {
+            input: new GraphQLNonNull(CommentInputType)
+        },
+        async resolve(_, {input}, {currentUser}) {
+
+        }
+    };
+
+    const replyComment = {
         type: CommentType,
         args: {
-            title: { type:  GraphQLString },
-            content: { type:  GraphQLString },
+            input: new GraphQLNonNull(CommentInputType)
         },
-        resolve: (object, args) => {
-            return Models.Comment.create(args);
-        }
-     };
+        async resolve(_, {input}, {currentUser}) {
 
-    const updateMutation = {
+        }
+    };
+
+    const removeComment = {
         type: CommentType,
         args: {
-            title: { type:  GraphQLString },
-            content: { type:  GraphQLString },
+            input: new GraphQLNonNull(CommentInputType)
         },
-        resolve: (object, args) => {
-            return Models.Comment.update(args, {where: {_id: object.id}});
-        }
-     };
+        async resolve(_, {input}, {currentUser}) {
 
-    const destroyMutation = {
-        type: CommentType,
-        args: {
-            id: { type: GraphQLInt },
-        },
-        resolve: (object, args) => {
-            return Models.Comment.destroy(args);
         }
-     };
-
+    };
 
     const CommentMutation = {
-        create: createMutation,
-        update: updateMutation,
-        destroy: destroyMutation,
+        replyArticle: replyArticle,
+        replyComment: replyComment,
+        removeComment: removeCOmment,
     }
     return CommentMutation;
 }

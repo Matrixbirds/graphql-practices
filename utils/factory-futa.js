@@ -39,7 +39,7 @@ const __meta__ = {
 };
 
 FactoryFuta.export = ()=> (
-    require('./module')(__meta__)
+    require('./module')(__meta__).__meta__
 )
 
 module.exports = FactoryFuta;

@@ -26,6 +26,8 @@ Object.assign(APP_ENV, {
 });
 
 
+console.log(APP_ENV);
+
 const nconf = require('nconf');
 
 nconf

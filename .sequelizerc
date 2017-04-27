@@ -1,6 +1,7 @@
 const path = require('path')
+
 module.exports = {
-    'config': path.resolve('be', 'config.js'),
+    'config': path.resolve('be', 'config'),
     'migrations-path': path.resolve('be/db', 'migrate'),
-    'models-path': path.resolve('be', 'models')
+    'models-path': path.resolve('be', 'models'),
 };

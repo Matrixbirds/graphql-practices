@@ -23,7 +23,7 @@ function Mutation ({
     GraphQLInt
 }) {
     const { defineMutationType } = require('../query_helpers');
-    const { UserMutation, ArticleMutation } = __meta__;
+    const { UserMutation, ArticleMutation, CommentMutation } = __meta__;
 
     return new GraphQLObjectType({
         name: 'Mutation',
@@ -34,6 +34,9 @@ function Mutation ({
             createArticle: ArticleMutation.create,
             editArticle: ArticleMutation.edit,
             removeArticle: ArticleMutation.destroy,
+            replyArticle: CommentMutation.replyArticle,
+            replyComment: CommentMutation.replyComment,
+            removeComment: CommentMutation.removeComment,
         })
     });
 };

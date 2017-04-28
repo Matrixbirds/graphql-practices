@@ -18,7 +18,10 @@ const GraphQLHandler = async (ctx, next) => {
         schema: GraphQLSchema,
         context: {
             get currentUser() {
-                return authToken(ctx.request.header)
+                return authToken(ctx.request.header).then(user => {
+                    if (!user) throw Error('currentUser is not found');
+                    return user
+                })
             }
         },
     })(ctx, next);

@@ -16,8 +16,8 @@ module.exports = ({
             input: { type: new GraphQLNonNull(ArticleInputType) }
         },
         async resolve(object, {input}, {currentUser}) {
-            const {dataValues: {id: user_id}} = await currentUser;
-            Object.assign(input, {user_id: user_id});
+            const _user = await currentUser;
+            Object.assign(input, {user_id: _user.user_id});
             return Article.create(input);
         }
      };
@@ -28,8 +28,8 @@ module.exports = ({
             input: { type: new GraphQLNonNull(ArticleInputType) }
         },
         async resolve(object, {input}, {currentUser}) {
-            const {dataValues: {id: user_id}} = await currentUser;
-            const record = await Article.findOne({where: {id: input.id, user_id: user_id}})
+            const _user = await currentUser;
+            const record = await Article.findOne({where: {id: input.id, user_id: _user.user_id}})
             if (!record) throw Error(`Article id: ${id}'s Not Found`)
             return record.update(input, {fields: ['content', 'title']});
         }
@@ -41,8 +41,8 @@ module.exports = ({
             input: { type: new GraphQLNonNull(ArticleInputType) }
         },
         async resolve(object, {input}, {currentUser}) {
-            const {dataValues: {id: user_id}} = await currentUser;
-            const record = await Article.findOne({where: {id: input.id, user_id: user_id}})
+            const _user = await currentUser;
+            const record = await Article.findOne({where: {id: input.id, user_id: _user.user_id}})
             if (!record) throw Error(`Article id: ${id}'s Not Found`)
             return record.destroy({});
         }

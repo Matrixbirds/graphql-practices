@@ -40,7 +40,10 @@ module.exports = function(sequelize, DataTypes) {
                 if (!payload) throw new Error("Token is Invalid");
                 const data = payload['data'];
                 if (!data) throw new Error("Token is Invalid");
-                return User.findById(data.id);
+                return User.findOne({where: {id: data.id}, raw: true}).then(user => {
+                    if (!user) throw Error(`User ${data.id} id is not found`)
+                    return user;
+                });
             },
             async authentication({name, password}) {
                 const user = await User.findOne({name: name});

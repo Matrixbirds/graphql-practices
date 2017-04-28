@@ -50,9 +50,14 @@ if (require.main === module) {
         return filename;
     }
 
-    function parseAttrs(argv) {
+    function filterFalsy(arr) {
+        const {isFalsy} = require('../utils');
+        return arr.filter(ele => (isFalsy(ele) ? '' : ele))
+    }
+
+    function parseAttrs(...argv) {
         const attrs = {};
-        for (const e of argv) {
+        for (const e of filterFalsy(argv)) {
             let [k, v] = e.split(':');
             attrs[k] = v;
         }
@@ -80,22 +85,23 @@ if (require.main === module) {
         name = camelCase(name);
         if (isFalsy(mutations) || isEmpty(mutations)) mutations = ['create', 'update', 'destroy'];
         const attrs = parseAttrs(attributes);
-        if (cmd && name && ['type', 'mutation'].includes(cmd) && attrs.length > 0 ) {
-            const generateOptions = {
-                name: name,
-                type_name: `${name}Type`,
-                mutation_name: `${name}Mutation`,
-                fields_table: attrs,
-                mutations: mutations
-            };
-            const options = {
-                filename: resourcePath(cmd, name),
-                options: generateOptions
-            };
-            const file = executeGenerateResource(cmd, options);
-            if (file) console.log(`generate types file at ${file}`);
-            else throw new Error(`Command: ${cmd} not Found`);
-        }
+        if (!cmd || !['type', 'mutation'].includes(cmd)) throw Error(`Command ${cmd} may not exists`);
+        if (!name) throw Error(`Name must be present`);
+        if (!attrs.length > 0) throw Error(`attrs must be present`);
+        const generateOptions = {
+            name: name,
+            type_name: `${name}Type`,
+            mutation_name: `${name}Mutation`,
+            fields_table: attrs,
+            mutations: mutations
+        };
+        const options = {
+            filename: resourcePath(cmd, name),
+            options: generateOptions
+        };
+        const file = executeGenerateResource(cmd, options);
+        if (!file) throw Error(`Command: ${cmd} not Found`);
+        console.log(`generate types file at ${file}`);
     }
 
     try {

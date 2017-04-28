@@ -23,7 +23,7 @@ module.exports = ({
         },
         async resolve(_, {input}, {currentUser}) {
             const _user = await currentUser;
-            Object.assign(input, {user_id: _user.user_id});
+            Object.assign(input, {user_id: _user.id});
             return sequelize.transaction(t => {
                 return Article.findOne({where: {id: input.article_id}}, {transaction: t})
                     .then(_article => {
@@ -41,7 +41,7 @@ module.exports = ({
         },
         async resolve(_, {input}, {currentUser}) {
             const _user = await currentUser;
-            Object.assign(input, {user_id: _user.user_id});
+            Object.assign(input, {user_id: _user.id});
             return sequelize.transaction(t => {
                 return Comment.findOne({where: {id: input.comment_id }}, {transaction: t})
                     .then(_comment => {
@@ -60,7 +60,7 @@ module.exports = ({
         },
         async resolve(record, {input}, {currentUser}) {
             const _user = await currentUser;
-            const _comment = await Comment.findOne({where: {id: input.id, user_id: _user.user_id}})
+            const _comment = await Comment.findOne({where: {id: input.id, user_id: _user.id}})
             if (!_comment) throw Error(`Comment id ${input.id} is not found`)
             return _comment.destroy({});
         }

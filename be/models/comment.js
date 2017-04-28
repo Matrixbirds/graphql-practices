@@ -4,7 +4,10 @@ module.exports = function(sequelize, DataTypes) {
     title: DataTypes.STRING,
     content: DataTypes.STRING,
     user_id: DataTypes.INTEGER,
-    article_id: DataTypes.INTEGER,
+    article_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
     comment_id: DataTypes.INTEGER
   }, {
     classMethods: {

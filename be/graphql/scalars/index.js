@@ -29,6 +29,6 @@ Object.defineProperty(Scalars, 'CountryScalar', {
             JAPAN: { value: 'JAPAN' },
         }
     })
-})
+});
 
 module.exports = Scalars;

@@ -2,6 +2,8 @@
 const { freezeRequire, jwt }= require('../../utils');
 const bcrypt = freezeRequire('bcrypt');
 
+const countryEnums = ['CHINA', 'JAPAN'];
+
 module.exports = function(sequelize, DataTypes) {
     const User = sequelize.define('user', {
         name: {
@@ -25,6 +27,17 @@ module.exports = function(sequelize, DataTypes) {
                     if (val.length < 7) {
                         throw new Error("密码最少7位")
                     }
+                }
+            }
+        },
+        country: {
+            type: DataTypes.ENUM,
+            values: countryEnums,
+            allowNull: true,
+            validate: {
+                isValid(val) {
+                    if (!countryEnums.includes(val))
+                        throw new Error('国家要么JAPAN要么CHINA', 'validate country error')
                 }
             }
         }

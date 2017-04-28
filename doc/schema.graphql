@@ -96,9 +96,26 @@ type CommentsType implements PaginationInterface {
     meta: PaginationType
 }
 
-type userAuthInput {
+type authInput {
     name: GraphQLString!
     password: GraphQLString!
+}
+
+type ArticleInput {
+    id: ID
+    title: String!
+    content: String!
+}
+
+mutation {
+    signUp(input: authInput!): signUpMutation
+    signIn(input: authInput!): signInMutation
+    createArticle(input: ArticleInput!): createArticleMutation
+    editArticle(input: ArticleInput!): editArticleMutation
+    removeArticle(input: ArticleInput!): removeArticleMutation
+    replyArticle(input: replyArticleInput!): replyArticleMutation
+    replyComment(input: replyCommentInput!): replyCommentMutation
+    removeComment(input: queryCommentInput!): removeCommentMutation
 }
 
 type meType {
@@ -112,23 +129,6 @@ type meType {
 type latestType {
     articles(page: Int! per: Int!): ArticlesType
     article(id: ID!) ArticleType
-}
-
-type ArticleInput {
-    id: ID
-    title: String!
-    content: String!
-}
-
-mutation {
-    signUp(input: userAuthInput!): signUpMutation
-    signIn(input: userAuthInput!): signInMutation
-    createArticle(input: ArticleInput!): createArticleMutation
-    editArticle(input: ArticleInput!): editArticleMutation
-    removeArticle(input: ArticleInput!): removeArticleMutation
-    replyArticle(id: ID!): replyArticleMutation
-    replyComment(id: ID!): replyCommentMutation
-    removeComment(id: ID!): removeCommentMutation
 }
 
 query {

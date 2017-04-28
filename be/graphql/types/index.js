@@ -26,11 +26,21 @@ function Query ({
 }) {
     const { definePaginateType, defineEntityType } = require('../query_helpers');
 
+    const MeType = __meta__.MeType.default;
+
     return new GraphQLObjectType({
         name: 'BlogSchema',
         description: 'Root of the Blog Schema',
         fields: () => ({
-            users: definePaginateType(Types.UserType.query, User),
+            //users: definePaginateType(Types.UserType.query, User),
+            me: {
+                type: MeType,
+                async resolve(_0, _1, {currentUser}) {
+                    const _user = await currentUser;
+                    if (!_user) throw Error('you property need login');
+                    return _user;
+                }
+            },
 //            comments: definePaginateType(Types.CommentType.query, Models.Comment),
 //            user: defineEntityType(Types.UserType.query, Models.User),
 //            comment: defineEntityType(Types.CommentType.query, Models.Comment),

@@ -3,7 +3,10 @@ module.exports = function(sequelize, DataTypes) {
   const Article = sequelize.define('article', {
     title: DataTypes.STRING,
     content: DataTypes.STRING,
-    user_id: DataTypes.INTEGER
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    }
   }, {
     classMethods: {
       associate: function(models) {

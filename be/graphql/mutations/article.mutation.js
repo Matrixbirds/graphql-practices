@@ -17,7 +17,8 @@ module.exports = ({
         },
         async resolve(object, {input}, {currentUser}) {
             const _user = await currentUser;
-            Object.assign(input, {user_id: _user.user_id});
+            Object.assign(input, {user_id: _user.id});
+            console.log('user', input);
             return Article.create(input);
         }
      };
@@ -29,7 +30,7 @@ module.exports = ({
         },
         async resolve(object, {input}, {currentUser}) {
             const _user = await currentUser;
-            const record = await Article.findOne({where: {id: input.id, user_id: _user.user_id}})
+            const record = await Article.findOne({where: {id: input.id, user_id: _user.id}})
             if (!record) throw Error(`Article id: ${id}'s Not Found`)
             return record.update(input, {fields: ['content', 'title']});
         }
@@ -42,7 +43,7 @@ module.exports = ({
         },
         async resolve(object, {input}, {currentUser}) {
             const _user = await currentUser;
-            const record = await Article.findOne({where: {id: input.id, user_id: _user.user_id}})
+            const record = await Article.findOne({where: {id: input.id, user_id: _user.id}})
             if (!record) throw Error(`Article id: ${id}'s Not Found`)
             return record.destroy({});
         }

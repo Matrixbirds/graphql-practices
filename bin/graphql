@@ -52,10 +52,10 @@ if (require.main === module) {
 
     function filterFalsy(arr) {
         const {isFalsy} = require('../utils');
-        return arr.filter(ele => (isFalsy(ele) ? '' : ele))
+        return arr.filter(ele => (isFalsy(ele) ? '' : ele));
     }
 
-    function parseAttrs(...argv) {
+    function parseAttrs(argv) {
         const attrs = {};
         for (const e of filterFalsy(argv)) {
             let [k, v] = e.split(':');

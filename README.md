@@ -1,4 +1,7 @@
 
+# requirements
+  * `bcrypt` dependence python2 command take care and confim dev environment installed python2 and must be named `python2`
+
 # My toolkit
  * repl console
  ```bash
@@ -11,57 +14,19 @@
  ./bin/graphql mutation article --attrs id:GraphQLInteger title:GraphQLString content:GraphQLString -m create update destroy
  ```
 
+# [schema.graphql](https://github.com/Matrixbirds/GraphQL-demo-blog/blob/master/doc/schema.graphql)
+
 # Query Example
  ```bashscript
  curl -i -H "Content-Type: application/json" -X POST \
- -d '{"query": "{ users: users(page:1 per:5) { data {id name} meta { totalPage } } }"}' \
+ -d '{"query": "query GRAPHQL_PAYLOAD"}' \
   http://localhost:3000/graphql
  ```
 
- ```json
-   {
-      "data": {
-          "users": {
-              "data": [
-                  {
-                      "id": "1",
-                      "name": "123"
-                  },
-                  {
-                      "id": "2",
-                      "name": "123"
-                  },
-                  {
-                      "id": "3",
-                      "name": "fuck"
-                  }
-              ],
-              "meta": null
-          }
-      }
-   }
- ```
-
-# Query Mutation Example
+# Mutation Example
  ```cURL
  curl --request POST \
   --url http://localhost:3000/graphql \
-  --header 'cache-control: no-cache' \
   --header 'content-type: application/json' \
-  --header 'postman-token: 04b4e3ca-a3c3-f25d-bc3d-57725666d06d' \
-  --data '{\n	"query": "mutation($name: String $password: String) { createUser(name: $name, password: $password) { id name } }",\n	"variables": {\n		"name": "123123123",\n		"password": "123123123"\n	}\n}'
+ -d '{"query": "mutation(input: GRAPHQL_INPUT!) GRAPHQL_PAYLOAD", "variables": "VARIABLES"}' \
  ```
-
- ```json
- {
-     "data": {
-         "createUser": {
-             "id": "4",
-             "name": "123123123"
-         }
-     }
- }
- ```
-
-# doc: doc/schema.graphql
-    
